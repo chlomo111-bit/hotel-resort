@@ -1,0 +1,23 @@
+<!doctype html><html lang="he" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ניהול – מלון הפאר</title>
+<style>body{margin:0;font:15px system-ui,Arial;background:#0f1430;color:#f5eddc;padding:14px}h1{color:#ffd86b;font-size:20px}input,button,select{font:inherit;border-radius:10px;border:0;padding:9px 12px}button{background:#ffd86b;color:#14193a;font-weight:700;cursor:pointer}button.s{background:#3a4468;color:#fff;padding:6px 9px;margin:2px}button.r{background:#d24b4b;color:#fff;padding:6px 9px;margin:2px}
+.k{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.k div{background:#1b2350;border-radius:12px;padding:10px 14px;flex:1;min-width:90px;text-align:center}.k b{display:block;font-size:22px;color:#ffd86b}
+table{width:100%;border-collapse:collapse;margin-top:8px}td,th{padding:7px 6px;border-bottom:1px solid #ffffff1a;text-align:right;font-size:13px}th{color:#ffd86b;cursor:pointer}tr.b td{opacity:.45}.on{color:#2fe38a}</style>
+<body><div id="lg"><h1>🔐 ניהול מלון הפאר</h1><input id="pw" type="password" placeholder="סיסמת מנהל"> <button id="go">כניסה</button> <span id="er" style="color:#ff8a8a"></span></div>
+<div id="ap" style="display:none"><h1>🏨 לוח ניהול <button class="s" id="rf">רענן</button></h1><div class="k" id="k"></div>
+<div class="k"><input id="mg" style="flex:3" placeholder="הודעה לכל השחקנים (עד 120 תווים)"><button id="mgo">שלח לכולם</button></div>
+<input id="q" placeholder="חיפוש שחקן…" style="width:100%;box-sizing:border-box;margin:6px 0"><div style="overflow:auto"><table id="t"></table></div></div>
+<script>
+let T='',L=[],srt='c';const $=i=>document.getElementById(i),fs=n=>{n=+n||0;const S=['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc'];let i=0;while(n>=1000&&i<S.length-1){n/=1000;i++}return(n<10&&i?n.toFixed(2):n<100&&i?n.toFixed(1):Math.round(n))+S[i]};
+const api=async(a,b)=>{const r=await fetch('/admin/api/'+a,{method:'POST',headers:{'content-type':'application/json','x-admin':T},body:JSON.stringify(b||{})});if(r.status===401){location.reload()}return r.json()};
+$('go').onclick=async()=>{const r=await fetch('/admin/api/login',{method:'POST',body:JSON.stringify({pw:$('pw').value})}),j=await r.json();if(!j.token){$('er').textContent='סיסמה שגויה';return}T=j.token;$('lg').style.display='none';$('ap').style.display='block';load()};
+async function load(){const j=await api('players');L=j.list;$('k').innerHTML=[['שחקנים רשומים',j.total],['מחוברים עכשיו',j.on],['פעילים ב־24ש׳',j.d1],['חדשים ב־24ש׳',j.new1]].map(x=>'<div><b>'+x[1]+'</b>'+x[0]+'</div>').join('');draw()}
+function draw(){const q=$('q').value.trim().toLowerCase(),now=Date.now();const R=L.filter(x=>!q||(x.n||'').toLowerCase().includes(q)).sort((a,b)=>srt==='ts'?b.ts-a.ts:(b[srt]||0)-(a[srt]||0));
+$('t').innerHTML='<tr><th>שם</th><th onclick="srt=\'lv\';draw()">רמה</th><th onclick="srt=\'c\';draw()">כסף</th><th onclick="srt=\'inc\';draw()">לשנייה</th><th onclick="srt=\'ts\';draw()">נראה</th><th>פעולות</th></tr>'+R.map(x=>{const on=now-x.ts<12e4,ago=on?'<span class=on>● מחובר</span>':Math.round((now-x.ts)/36e5)+' ש׳';return'<tr class="'+(x.ban?'b':'')+'"><td>'+(x.tt||'')+' '+esc(x.n)+(x.ban?' 🚫':'')+'</td><td>'+x.lv+'</td><td>'+fs(x.c)+'</td><td>'+fs(x.inc)+'</td><td>'+ago+'</td><td><button class=s onclick="gr(\''+x.id+'\')">🎁 מענק</button><button class=s onclick="lv(\''+x.id+'\')">⬆ רמות</button><button class=s onclick="rn(\''+x.id+'\')">✏ שם</button><button class=s onclick="bn(\''+x.id+'\','+(x.ban?0:1)+')">'+(x.ban?'שחרר':'🚫 חסום')+'</button><button class=r onclick="dl(\''+x.id+'\')">🗑</button></td></tr>'}).join('')}
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function gr(id){const v=prompt('כמה ₪ להוסיף? (אפשר מספר שלילי)');if(!v)return;await api('grant',{id,cash:+v,note:'מתנה מהמנהל'});alert('המענק יגיע כשהשחקן ייכנס/יהיה מחובר');load()}
+async function lv(id){const v=prompt('כמה רמות להוסיף?');if(!v)return;await api('grant',{id,lv:+v,note:'בונוס מהמנהל'});alert('נשלח');load()}
+async function rn(id){const v=prompt('שם חדש (עד 14 תווים)');if(!v)return;await api('rename',{id,n:v});load()}
+async function bn(id,on){if(!confirm(on?'לחסום את השחקן?':'לשחרר?'))return;await api('ban',{id,on});load()}
+async function dl(id){if(!confirm('למחוק את השחקן וההתקדמות שלו? אי אפשר לבטל'))return;await api('delete',{id});load()}
+$('mgo').onclick=async()=>{const t=$('mg').value.trim();if(!t)return;await api('msg',{txt:t});$('mg').value='';alert('נשלח')};$('rf').onclick=load;$('q').oninput=draw;$('pw').onkeydown=e=>{if(e.key==='Enter')$('go').click()};setInterval(()=>{if(T)load()},30000);
+</script></html>
