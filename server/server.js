@@ -19,7 +19,7 @@ http.createServer(async(req,res)=>{try{
  const u=new URL(req.url,'http://x'),p=u.pathname;
  if(req.method==='OPTIONS')return send(res,204,'');
  if(p==='/'||p==='/health')return send(res,200,{ok:1,players:Object.keys(D.players).length});
- if(p==='/admin'||p==='/admin/')return send(res,200,fs.readFileSync(path.join(__dirname,'admin.html')),{'content-type':'text/html; charset=utf-8'});
+ if(p==='/admin'||p==='/admin/')return send(res,200,fs.readFileSync(path.join(__dirname,'admin.html'),'utf8'),{'content-type':'text/html; charset=utf-8'});
  // ---- jeu ----
  if(p==='/api/sync'&&req.method==='POST'){const b=await body(req),id=String(b.id||'').slice(0,14),tok=String(b.tok||''),nk=String(b.nk||'').slice(0,32);if(!/^[0-9a-f]{14}$/.test(id)||tok.length<32)return send(res,400,{err:'bad'});
   let pl=D.players[id];const th=sha(tok);

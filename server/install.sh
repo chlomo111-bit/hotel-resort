@@ -20,7 +20,7 @@ User=root
 [Install]
 WantedBy=multi-user.target
 U
-systemctl daemon-reload; systemctl enable --now hotel-server; sleep 1
+systemctl daemon-reload; systemctl enable hotel-server; systemctl restart hotel-server; sleep 1
 curl -s http://127.0.0.1:8099/health; echo
 CF=/etc/caddy/Caddyfile
 if [ -f $CF ] && ! grep -q "hotel-api.assoulineweb.com" $CF; then
