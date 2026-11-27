@@ -790,7 +790,7 @@ const ACH=[['x5','🎓','רמת מנהל 5',()=>lvl()>=5],['x10','🎓','רמת 
 setInterval(()=>{if(!LOGGED||VIS)return;if(F>0)S.g.n.f=1;ACH.forEach(a=>{if(!S.g.ach[a[0]]&&a[3]()){S.g.ach[a[0]]=1;const r=Math.round(Math.max(300,income()*120));S.cash+=r;note('🏅 '+a[2]+' · +₪'+fs(r));sfx.up();saveNow()}})},1000);
 // tutorial
 const TUT=['עמוד על המשטח הזהב כדי לאסוף כסף 💰','עמוד על המשטח הלבן כדי לשדרג את האזור ⬆','עמוד על המשטח הטורקיז כדי לשכור עובד שעובד לבד 👷','כשיש כסף – עלה במעלית לקומה הבאה 🛗'];
-setInterval(()=>{const el=$('tut');if(!LOGGED||VIS||S.g.tut>=4){el.style.display='none';return}const d=[()=>S.g.n.c>=1,()=>S.g.n.u>=1,()=>S.g.n.h>=1,()=>S.g.n.f>=1];while(S.g.tut<4&&d[S.g.tut]())S.g.tut++;if(S.g.tut>=4){el.style.display='none';saveNow();return}el.textContent=S.g.tut===3?(S.cash<FLC[1]?'המעלית 🛗 בצד ימין של הלובי. לפתוח את קומה 1 עולה ₪'+fs(FLC[1]):'עמוד על המשטח הסגול ליד המעלית 🛗 כדי לפתוח את קומה 1'):TUT[S.g.tut];el.style.display='block'},600);
+setInterval(()=>{const el=$('tut');if(!LOGGED||VIS||S.g.tut>=4){el.style.display='none';return}const d=[()=>S.g.n.c>=1,()=>S.g.n.u>=1,()=>S.g.n.h>=1,()=>S.g.n.f>=1];while(S.g.tut<4&&d[S.g.tut]())S.g.tut++;if(S.g.tut>=4){el.style.display='none';saveNow();return}if(S.g.tut===3&&S.cash<FLC[1]){el.style.display='none';return}el.textContent=S.g.tut===3?'יש לך מספיק כסף! 🛗 עמוד על המשטח הסגול ליד המעלית (בצד ימין של הלובי) כדי לפתוח את קומה 1':TUT[S.g.tut];el.style.display='block'},600);
 // themes
 const THEMES=[['☀ יום',0x39c6d6,0xfff0d6,2.2,1.2,1.2],['🌅 שקיעה',0xf6916b,0xffb36b,1.8,1.1,.9],['🌙 לילה',0x101a40,0x9fb4ff,.9,.9,.55],['🌴 טרופי',0x4fe0c0,0xffffff,2.4,1.25,1.3]];
 function applyTheme(){const t=THEMES[S.g.th||0];scene.background.set(t[1]);sun.color.set(t[2]);sun.intensity=t[3];R.toneMappingExposure=t[4];HEM.intensity=t[5]}
@@ -816,7 +816,7 @@ function renderMenu(){const b=$('mbody');b.innerHTML='';[0,1,2,3].forEach(i=>{co
 $('mbtn').onclick=()=>{renderMenu();$('mpanel').style.display='block'};$('mclose').onclick=()=>$('mpanel').style.display='none';[0,1,2,3].forEach(i=>$('mt'+i).onclick=()=>{MT=i;renderMenu()});
 // events
 let NEV=Date.now()+60000;
-setInterval(()=>{if(!LOGGED||VIS||S.g.tut<4||Date.now()<NEV)return;NEV=Date.now()+(100+Math.random()*80)*1000;const k='ev'+Date.now(),I=()=>income(),n=Date.now(),E=[
+setInterval(()=>{if(!LOGGED||VIS||S.g.tut<3||Date.now()<NEV)return;NEV=Date.now()+(100+Math.random()*80)*1000;const k='ev'+Date.now(),I=()=>income(),n=Date.now(),E=[
  ['🎩 אורח VIP הגיע! לארח אותו בכבוד?',()=>{const a=Math.round(I()*40);S.cash+=a;S.g.bEnd=Math.max(S.g.bEnd,n+6e4);S.g.bM=Math.max(Date.now()<S.g.bEnd?S.g.bM:1,3);note('🎩 VIP שילם ₪'+fs(a)+' · טיפים x3');sfx.ding()}],
  ['💒 חתונה באולם! לארח אותה?',()=>{const a=Math.round(I()*70);S.cash+=a;note('💒 החתונה הכניסה ₪'+fs(a));sfx.ding()}],
  ['⭐ מבקר מישלן הגיע! להרשים אותו (עולה ₪'+fs(Math.round(I()*20))+')?',()=>{const c=Math.round(I()*20);if(S.cash<c){note('אין מספיק כסף');return}S.cash-=c;const a=Math.round(I()*150);S.cash+=a;note('⭐ ביקורת מעולה! +₪'+fs(a));sfx.up()}]],e=E[Math.floor(Math.random()*E.length)];toast(k,e[0],e[1],null)},5000);
