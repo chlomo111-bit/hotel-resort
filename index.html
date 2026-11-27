@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;800&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;height:100%;overflow:hidden;background:#14193a;font-family:'Heebo',sans-serif;color:#f5eddc;touch-action:none;user-select:none;-webkit-user-select:none}
-canvas{display:block;position:fixed;inset:0}
+html,body{margin:0;width:100%;height:100%;height:100dvh;position:fixed;inset:0;overflow:hidden;overscroll-behavior:none;background:#14193a;font-family:'Heebo',sans-serif;color:#f5eddc;touch-action:none;user-select:none;-webkit-user-select:none}
+canvas{display:block;position:fixed;inset:0;width:100vw!important;height:100vh!important;height:100dvh!important}
 #ui{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between}
 #top{padding:max(14px,env(safe-area-inset-top)) 14px 0;display:flex;flex-direction:column;gap:8px}
 .row{display:flex;justify-content:space-between;align-items:flex-end}
@@ -63,7 +63,7 @@ canvas{display:block;position:fixed;inset:0}
 <div id="hint">החלק עם האצבע כדי ללכת. עמוד על המשטחים: זהב לאסוף, לבן לשדרג, טורקיז לשכור עובד.</div>
 </div>
 </div>
-<div id="start" style="position:fixed;inset:0;z-index:20;background:linear-gradient(#14193acc,#2a1f55e6);backdrop-filter:blur(3px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#ffd86b;font:800 40px Heebo,sans-serif;text-align:center"><svg id="logo" width="150" height="150" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3b0"/><stop offset="1" stop-color="#d89a1c"/></linearGradient></defs><circle cx="100" cy="100" r="92" fill="#14193a" stroke="url(#lg)" stroke-width="7"/><circle cx="100" cy="100" r="80" fill="none" stroke="#ffd86b55" stroke-width="2"/><path d="M52 92l14-38 22 24 12-34 12 34 22-24 14 38z" fill="url(#lg)"/><rect x="52" y="96" width="96" height="9" rx="3" fill="url(#lg)"/><circle cx="66" cy="52" r="5" fill="#fff3b0"/><circle cx="100" cy="42" r="6" fill="#fff3b0"/><circle cx="134" cy="52" r="5" fill="#fff3b0"/><path d="M60 128h80M70 144h60" stroke="url(#lg)" stroke-width="6" stroke-linecap="round"/><path d="M100 152l4 9 10 1-8 6 3 10-9-6-9 6 3-10-8-6 10-1z" fill="#ffd86b" transform="translate(0,2) scale(1)"/></svg><div style="letter-spacing:1px;text-shadow:0 3px 0 #0007">מלון הפאר</div><div style="font-size:15px;color:#c9cfe0;font-weight:500;margin-top:-10px">LUXURY RESORT · נהל · שדרג · התעשר</div><div style="font:500 11px Heebo;color:#8b90a3;margin-top:-6px">גרסה 2.7</div><input id="nm" maxlength="14" placeholder="שם המלון / השם שלך" style="border:0;border-radius:14px;padding:14px 18px;font:700 18px Heebo;text-align:center;width:230px;background:#ffffff1f;color:#fff"><input id="pw" type="password" autocomplete="current-password" placeholder="סיסמה" style="border:0;border-radius:14px;padding:14px 18px;font:700 18px Heebo;text-align:center;width:230px;background:#ffffff1f;color:#fff"><label id="remw" style="font:600 14px Heebo;color:#c9cfe0"><input id="rem" type="checkbox" checked style="vertical-align:middle;margin-left:6px">שמור אותי מחובר</label><div id="perr" style="font:600 13px Heebo;color:#ff8a8a;min-height:16px"></div><button id="sw" style="display:none;border:0;background:none;color:#8fe8f0;font:600 14px Heebo;text-decoration:underline">לא אני / החלף משתמש</button><button id="go" style="border:0;border-radius:18px;padding:16px 34px;font:800 20px Heebo;background:#ffd86b;color:#14193a">כניסה למשחק במסך מלא</button></div>
+<div id="start" style="position:fixed;inset:0;z-index:20;background:linear-gradient(#14193acc,#2a1f55e6);backdrop-filter:blur(3px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#ffd86b;font:800 40px Heebo,sans-serif;text-align:center"><svg id="logo" width="150" height="150" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3b0"/><stop offset="1" stop-color="#d89a1c"/></linearGradient></defs><circle cx="100" cy="100" r="92" fill="#14193a" stroke="url(#lg)" stroke-width="7"/><circle cx="100" cy="100" r="80" fill="none" stroke="#ffd86b55" stroke-width="2"/><path d="M52 92l14-38 22 24 12-34 12 34 22-24 14 38z" fill="url(#lg)"/><rect x="52" y="96" width="96" height="9" rx="3" fill="url(#lg)"/><circle cx="66" cy="52" r="5" fill="#fff3b0"/><circle cx="100" cy="42" r="6" fill="#fff3b0"/><circle cx="134" cy="52" r="5" fill="#fff3b0"/><path d="M60 128h80M70 144h60" stroke="url(#lg)" stroke-width="6" stroke-linecap="round"/><path d="M100 152l4 9 10 1-8 6 3 10-9-6-9 6 3-10-8-6 10-1z" fill="#ffd86b" transform="translate(0,2) scale(1)"/></svg><div style="letter-spacing:1px;text-shadow:0 3px 0 #0007">מלון הפאר</div><div style="font-size:15px;color:#c9cfe0;font-weight:500;margin-top:-10px">LUXURY RESORT · נהל · שדרג · התעשר</div><div style="font:500 11px Heebo;color:#8b90a3;margin-top:-6px">גרסה 2.8</div><input id="nm" maxlength="14" placeholder="שם המלון / השם שלך" style="border:0;border-radius:14px;padding:14px 18px;font:700 18px Heebo;text-align:center;width:230px;background:#ffffff1f;color:#fff"><input id="pw" type="password" autocomplete="current-password" placeholder="סיסמה" style="border:0;border-radius:14px;padding:14px 18px;font:700 18px Heebo;text-align:center;width:230px;background:#ffffff1f;color:#fff"><label id="remw" style="font:600 14px Heebo;color:#c9cfe0"><input id="rem" type="checkbox" checked style="vertical-align:middle;margin-left:6px">שמור אותי מחובר</label><div id="perr" style="font:600 13px Heebo;color:#ff8a8a;min-height:16px"></div><button id="sw" style="display:none;border:0;background:none;color:#8fe8f0;font:600 14px Heebo;text-decoration:underline">לא אני / החלף משתמש</button><button id="go" style="border:0;border-radius:18px;padding:16px 34px;font:800 20px Heebo;background:#ffd86b;color:#14193a">כניסה למשחק במסך מלא</button></div>
 <div id="vis" style="position:fixed;left:0;right:0;bottom:150px;z-index:7;display:none;justify-content:center;gap:10px;align-items:center"><div id="visn" style="background:#0b1020dd;border-radius:14px;padding:10px 14px;font:800 14px Heebo;color:#ffd86b"></div><button id="vgift" style="border:0;border-radius:14px;padding:10px 14px;font:800 14px Heebo;background:#ff8fb1;color:#14193a">🎁 מתנה</button><button id="vback" style="border:0;border-radius:14px;padding:10px 16px;font:800 14px Heebo;background:#ffd86b;color:#14193a">חזרה למלון שלי</button></div>
 <button id="pbtn" style="position:fixed;left:70px;bottom:130px;z-index:6;width:46px;height:46px;border:0;border-radius:14px;background:#0b1020cc;color:#ffd86b;font-size:22px">👥</button>
 <div id="note" style="position:fixed;top:max(120px,calc(env(safe-area-inset-top) + 106px));left:50%;transform:translateX(-50%);z-index:29;display:none;background:#0b1020ee;border-radius:20px;padding:8px 16px;font:800 14px Heebo;color:#fff;white-space:nowrap;border:1px solid #2fe38a"></div>
@@ -499,7 +499,7 @@ const RM=[['לובי וקבלה','פקיד',8,0,0,0],['מסעדת שף','שף',2
 ['ספינת תענוגות','קפטן',1.4e7,0,4,0],['מרינת יאכטות','קברניט',3e7,9e10,4,1],['מגדלור וצלילה','מדריך צלילה',6.5e7,2e11,4,2],
 ['תחנת חלל','אסטרונאוט',1.4e8,0,5,0],['מצפה כוכבים','אסטרונום',3e8,9e11,5,1],['מעבדת אנרגיה','מדען',6.5e8,2e12,5,2]];
 const FLC=[0,1.5e8,3.5e9,8e10,2e12,5e13],FN=['קומת קרקע','קומה 1 · הפאר','קומה 2 · הילדים והים','קומה 3 · הקניות','קומה 4 · הים הפתוח','קומה 5 · החלל'],COLS=[10,3,3,3,3,3],NF=6,MAXL=1e9;
-const S={g:{tips:0,gifts:0,bEnd:0,bM:1,sEnd:0,pr:0,n:{c:0,u:0,h:0,f:0},ach:{},dr:{d:'',s:0},th:0,tut:0,xp:0,te:0,pt:0,lv:1,qi:0,q:null,cb:0},cash:800,t:0,fl:[1,0,0,0,0,0],rm:RM.map(r=>({n:r[0],w:r[1],rate:r[2],lock:r[3]*20,fl:r[4],col:r[5],open:r[3]===0&&r[4]===0,l:1,h:0,p:0}))};
+const S={g:{tips:0,gifts:0,bEnd:0,bM:1,sEnd:0,pr:0,n:{c:0,u:0,h:0,f:0},ach:{},dr:{d:'',s:0},th:0,tut:0,xp:0,te:0,pt:0,lv:1,qi:0,q:null,cb:0,se:null,cw:null,ti:'',sw:0,dw:0,gg:0},cash:800,t:0,fl:[1,0,0,0,0,0],rm:RM.map(r=>({n:r[0],w:r[1],rate:r[2],lock:r[3]*20,fl:r[4],col:r[5],open:r[3]===0&&r[4]===0,l:1,h:0,p:0}))};
 let F=0;
 const rIdx=(f,c)=>S.rm.findIndex(r=>r.fl===f&&r.col===c);
 const REV=['"הסוויטה מדהימה, נחזור!" דנה','"הקזינו מרשים אבל איטי" יוסי','"אוכל טעים, שירות איטי" מיכל','"הבריכה מושלמת לילדים" רוני','"הצוות הכי נחמד" אורן','"המועדון היה אש" נועה','"הנוף מהבר פשוט מטורף" שיר','"האקווריום הילדים לא רצו לצאת" אבי'];
@@ -619,7 +619,7 @@ function hud(){
  upads.forEach(p=>{const r=S.rm[p.r];setLabel(p.lb,'פתח '+r.n+' ₪'+fs(r.lock),S.cash>=r.lock?'#ff6b6b':'#8b90a3','#fff')});
  epads.forEach(p=>{const nf=p.f+p.d;let t,bg='#b48cff';if(!S.fl[nf]){t='פתח קומה '+nf+' ₪'+fs(FLC[nf]);if(S.cash<FLC[nf])bg='#8b90a3'}else t=(p.d>0?'⬆ קומה ':'⬇ קומה ')+nf;setLabel(p.lb,t,bg,'#14193a')})}
 let D=24;
-function fit(){const w=innerWidth,h=innerHeight,a=w/h;R.setSize(w,h);cam.aspect=a;D=Math.max(11.6/(2*Math.tan(THREE.MathUtils.degToRad(cam.fov/2))*a),18);cam.updateProjectionMatrix()}
+function fit(){const vv=window.visualViewport,w=Math.max(innerWidth,vv?Math.round(vv.width):0),h=Math.max(innerHeight,vv?Math.round(vv.height):0),a=w/h;R.setSize(w,h,false);cam.aspect=a;D=Math.max(11.6/(2*Math.tan(THREE.MathUtils.degToRad(cam.fov/2))*a),18);cam.updateProjectionMatrix()}
 addEventListener('resize',fit);fit();
 let cx=0;const clock=new THREE.Clock(),PITCH=1.0;
 let PC0=0,LACT=Date.now(),LPX=0,LPZ=0;const AFK=()=>Date.now()-LACT>90000?.2:1;['pointerdown','keydown','touchstart','touchmove'].forEach(e=>addEventListener(e,()=>{LACT=Date.now()},{passive:true}));
@@ -688,9 +688,9 @@ for(const id in PEERS){const v=PEERS[id].gv;if(v&&v.to===MYID&&v.t>(GVS[id]||0)&
  renderFriends()}
 function stepGhosts(dt){for(const id in PEERS){const s=PEERS[id];let g=GH[id];if(!g)g=GH[id]=ghost(id,s.n);const vis=s.h===hostId()&&s.f===F;g.p.visible=g.lb.visible=vis;if(!vis)continue;
   const dx=s.x-g.p.position.x,dz=s.z-g.p.position.z,d=Math.hypot(dx,dz);if(d>6){g.p.position.set(s.x,0,s.z)}else{const k=Math.min(1,dt*8);g.p.position.x+=dx*k;g.p.position.z+=dz*k}
-  if(d>.05)g.p.rotation.y=Math.atan2(dx,dz);gait(g.p,dt,d>.15,.75);g.lb.position.set(g.p.position.x,2.7,g.p.position.z);if(s.lv&&g.lv!==s.lv){g.lv=s.lv;setLabel(g.lb,(s.n||'אורח')+' · רמה '+s.lv,'#0b1020cc','#ffd86b')}}MYLB.visible=LOGGED;MYLB.position.set(me.position.x,2.75,me.position.z)}
+  if(d>.05)g.p.rotation.y=Math.atan2(dx,dz);gait(g.p,dt,d>.15,.75);g.lb.position.set(g.p.position.x,2.7,g.p.position.z);if(s.lv&&(g.lv!==s.lv||g.tt!==s.tt)){g.lv=s.lv;g.tt=s.tt;setLabel(g.lb,(s.tt?String(s.tt).slice(0,4)+' ':'')+(s.n||'אורח')+' · רמה '+s.lv,'#0b1020cc','#ffd86b')}}MYLB.visible=LOGGED;MYLB.position.set(me.position.x,2.75,me.position.z)}
 let lastPres='',lastT=0,GV=null;const GVS={};
-function sendPres(){if(!ROOM||!LOGGED)return;const o={id:MYID,n:NAME,x:+me.position.x.toFixed(1),z:+me.position.z.toFixed(1),f:F,h:hostId(),inc:Math.floor(income()),c:Math.floor(S.cash),lv:lvl(),o:S.rm.filter(r=>r.open).length,fq:sigList('fq'),fa:sigList('fa'),jr:sigList('jr'),ja:sigList('ja'),iv:sigList('iv')};if(GV&&Date.now()-GV.t<20000)o.gv=GV;if(!VIS)o.sn=snapC();const k=JSON.stringify(o);if(k===lastPres&&!(ROOM.mqtt&&Date.now()-lastT<1500))return;lastPres=k;lastT=Date.now();try{ROOM.presence(o)}catch(e){}}
+function sendPres(){if(!ROOM||!LOGGED)return;const o={id:MYID,n:NAME,x:+me.position.x.toFixed(1),z:+me.position.z.toFixed(1),f:F,h:hostId(),inc:Math.floor(income()),c:Math.floor(S.cash),lv:lvl(),o:S.rm.filter(r=>r.open).length,se:WK(),ss:Math.floor(seasonScore()),tt:myTT(),cw:S.g.cw?S.g.cw.i:0,cs:Math.floor(duelScore()),fq:sigList('fq'),fa:sigList('fa'),jr:sigList('jr'),ja:sigList('ja'),iv:sigList('iv')};if(GV&&Date.now()-GV.t<20000)o.gv=GV;if(!VIS)o.sn=snapC();const k=JSON.stringify(o);if(k===lastPres&&!(ROOM.mqtt&&Date.now()-lastT<1500))return;lastPres=k;lastT=Date.now();try{ROOM.presence(o)}catch(e){}}
 setInterval(sendPres,250);setInterval(()=>{sendPres();renderFriends()},2000);
 function visit(id,joined){const s=PEERS[id]||DIR[id];if(!s||!s.sn)return;if(!VIS)HOMEBK=snapFull();VIS={id,n:String(s.n||'').slice(0,14),joined:!!joined};try{applySnap(s.sn)}catch(e){goHome();return}setF(0,-2,4.5);$('vis').style.display='flex';$('visn').textContent=(joined?'אתה במלון של ':'מבקר באי של ')+(s.n||'חבר');$('panel').style.display='none'}
 function goHome(){if(!VIS)return;VIS=null;applySnap(HOMEBK);S.cash=HOMEBK.cash;$('vis').style.display='none';setF(0,-2,4.5)}
@@ -754,16 +754,23 @@ $('gbtn').onclick=()=>{renderGifts();$('gpanel').style.display='block'};$('gclos
 let DQ=null;
 function startDir(){if(DQ)return;DQ=1;const T='shlomo-hotel-resort-v1/h/';
  const go=()=>{try{const cl=mqtt.connect('wss://broker.hivemq.com:8884/mqtt',{reconnectPeriod:5000});DQ=cl;
-  const pub=()=>{if(!cl.connected||!LOGGED||VIS)return;cl.publish(T+MYID,JSON.stringify({id:MYID,n:NAME,c:Math.floor(S.cash),inc:Math.floor(income()),lv:lvl(),o:S.rm.filter(r=>r.open).length,ts:Date.now(),sn:snapC()}),{retain:true,qos:1})};
+  const pub=()=>{if(!cl.connected||!LOGGED||VIS)return;cl.publish(T+MYID,JSON.stringify({id:MYID,n:NAME,c:Math.floor(S.cash),inc:Math.floor(income()),lv:lvl(),o:S.rm.filter(r=>r.open).length,ts:Date.now(),se:WK(),ss:Math.floor(seasonScore()),tt:myTT(),sn:snapC()}),{retain:true,qos:1})};
   cl.on('connect',()=>{cl.subscribe(T+'+');pub()});
-  cl.on('message',(t,m)=>{try{const o=JSON.parse(m.toString());if(o&&o.id&&o.n&&Date.now()-o.ts<30*864e5)DIR[String(o.id).slice(0,14)]={id:String(o.id).slice(0,14),n:String(o.n).slice(0,14),c:nn(o.c,0,1e300),inc:nn(o.inc,0,1e300),lv:Math.floor(nn(o.lv,0,999)),o:nn(o.o,0,99),ts:nn(o.ts,0,9e15),sn:Array.isArray(o.sn&&o.sn.rm)?o.sn:null}}catch(e){}});
+  cl.on('message',(t,m)=>{try{const o=JSON.parse(m.toString());if(o&&o.id&&o.n&&Date.now()-o.ts<30*864e5)DIR[String(o.id).slice(0,14)]={id:String(o.id).slice(0,14),n:String(o.n).slice(0,14),c:nn(o.c,0,1e300),inc:nn(o.inc,0,1e300),lv:Math.floor(nn(o.lv,0,999)),o:nn(o.o,0,99),ts:nn(o.ts,0,9e15),se:nn(o.se,0,1e6),ss:nn(o.ss,0,1e300),tt:String(o.tt||'').slice(0,4),sn:Array.isArray(o.sn&&o.sn.rm)?o.sn:null}}catch(e){}});
   setInterval(pub,8000);addEventListener('pagehide',pub)}catch(e){}};
  if(window.mqtt)return go();
  let sc=document.querySelector('script[src*="mqtt"]');if(!sc){sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js';document.head.appendChild(sc)}
  sc.addEventListener('load',go)}
 let LTAB=0;
+function renderSeason(){const ses=LTAB===2,L=ses?rankList('ss','se',WK()):rankList('cs','cw',dwId());const box=$('llist');box.innerHTML='';
+ [2,3].forEach(i=>{const b=$('lt'+i);if(b){b.style.background=LTAB===i?'#ffd86b':'#3a4468';b.style.color=LTAB===i?'#14193a':'#c9cfe0'}});$('lt0').style.background=$('lt1').style.background='#3a4468';$('lt0').style.color=$('lt1').style.color='#c9cfe0';
+ let info;if(ses){const left=((WK()+1)*7-4)*864e5-Date.now();info='🏆 עונה שבועית · נגמרת בעוד '+Math.floor(left/864e5)+' ימים ו־'+Math.floor(left/36e5%24)+' ש׳ · מקום 1 = ₪ גדול + תואר 🥇'}else{const t=Date.now()%DW;info=inDuel()?'⚔ דו-קרב פעיל! נשארו '+Math.ceil((DL-t)/6e4)+' דק׳':'⚔ דו-קרב הבא בעוד '+Math.ceil((DW-t)/6e4)+' דק׳ (כל 30 דק׳, נמשך 10)'}
+ $('lst').textContent=info;const M=['🥇','🥈','🥉'];
+ if(L.length<2&&!ses&&!inDuel()){const r=document.createElement('div');r.style.cssText='color:#c9cfe0;font:700 14px Heebo;padding:10px';r.textContent='הדירוג יתמלא כשכמה שחקנים ישחקו בזמן הדו-קרב';box.appendChild(r)}
+ L.slice(0,30).forEach((o,i)=>{const r=document.createElement('div');r.style.cssText='display:flex;align-items:center;gap:8px;background:'+(o.me?'#ffd86b33':'#ffffff14')+';border-radius:14px;padding:10px 12px;margin-bottom:6px';r.innerHTML='<div style="font:800 18px Heebo;width:30px">'+(M[i]||(i+1))+'</div><div style="flex:1;font:800 14px Heebo"></div><div style="font:800 14px Heebo;color:#ffd86b">₪'+fs(o.v)+'</div>';r.children[1].textContent=o.n+(o.me?' (אני)':'');box.appendChild(r)})}
 function renderBoard(){const all={};for(const id in DIR)all[id]=Object.assign({},DIR[id]);for(const id in PEERS){const p=PEERS[id];all[id]=Object.assign(all[id]||{},{id,n:p.n,lv:p.lv,inc:p.inc,c:p.c!=null?p.c:(all[id]||{}).c,o:p.o,sn:p.sn||(all[id]||{}).sn,on:1})}
  all[MYID]={id:MYID,n:NAME,c:Math.floor(S.cash),inc:Math.floor(income()),lv:lvl(),o:S.rm.filter(r=>r.open).length,me:1,on:1};
+ if(LTAB>=2){renderSeason();return}
  const k=LTAB?'inc':'c',L=Object.values(all).sort((a,b)=>(b[k]||0)-(a[k]||0));
  $('lt0').style.background=LTAB?'#3a4468':'#ffd86b';$('lt0').style.color=LTAB?'#c9cfe0':'#14193a';$('lt1').style.background=LTAB?'#ffd86b':'#3a4468';$('lt1').style.color=LTAB?'#14193a':'#c9cfe0';
  $('lst').textContent=DQ&&DQ.connected?'מחובר לדירוג העולמי · '+L.length+' מלונות':'מציג רק שחקנים מחוברים כרגע';
@@ -775,6 +782,7 @@ function renderBoard(){const all={};for(const id in DIR)all[id]=Object.assign({}
   if(!o.me&&(o.sn||PEERS[o.id])){const b=act('בקר',()=>{if(!PEERS[o.id]&&DIR[o.id]===undefined&&o.sn)DIR[o.id]=o;$('lpanel').style.display='none';visit(o.id,false)});r.append(b)}
   box.appendChild(r)})}
 $('lbtn').onclick=()=>{renderBoard();$('lpanel').style.display='block'};$('lclose').onclick=()=>$('lpanel').style.display='none';
+{const t1=$('lt1');[['lt2','🏆 עונה'],['lt3','⚔ דו-קרב']].forEach(([id,tx])=>{const b=document.createElement('button');b.id=id;b.textContent=tx;b.style.cssText=t1.style.cssText;b.style.background='#3a4468';b.style.color='#c9cfe0';t1.parentNode.appendChild(b)});$('lt2').onclick=()=>{LTAB=2;renderBoard()};$('lt3').onclick=()=>{LTAB=3;renderBoard()}}
 $('lt0').onclick=()=>{LTAB=0;renderBoard()};$('lt1').onclick=()=>{LTAB=1;renderBoard()};
 setInterval(()=>{if($('lpanel').style.display==='block')renderBoard()},4000);
 
@@ -809,7 +817,7 @@ const xpv=()=>S.g.n.c+4*S.g.n.u+8*S.g.n.h+15*Object.keys(S.g.ach).length+25*S.g.
 const lvl=()=>Math.floor(Math.sqrt(xpv()/6))+1;
 const title=l=>l<5?'מנהל מתחיל':l<10?'מנהל':l<15?'מנהל בכיר':l<20?'מגנט':'אגדה';
 setInterval(()=>{if(!LOGGED||VIS)return;const l=lvl();if(l>S.g.lv){if(S.g.lv>0){const r=Math.round(Math.max(500,income()*200));S.cash+=r;note('🎖 רמה '+l+' · '+title(l)+' · +₪'+fs(r));sfx.up()}S.g.lv=l;saveNow()}
- const t='רמה '+l+' · '+(NAME.length>11?NAME.slice(0,10)+'…':NAME);setLabel(MYLB,t,'#0b1020cc','#ffd86b');$('afk').style.display=(LOGGED&&!VIS&&AFK()<1)?'block':'none';const sl=$('slv');if(sl)sl.textContent='🎖 רמה '+l},1000);
+ const t=myTT()+(myTT()?' ':'')+'רמה '+l+' · '+(NAME.length>11?NAME.slice(0,10)+'…':NAME);setLabel(MYLB,t,'#0b1020cc','#ffd86b');$('afk').style.display=(LOGGED&&!VIS&&AFK()<1)?'block':'none';const sl=$('slv');if(sl)sl.textContent='🎖 רמה '+l},1000);
 // menu
 let MT=0;
 function renderMenu(){const b=$('mbody');b.innerHTML='';[0,1,2,3,4].forEach(i=>{const t=$('mt'+i);t.style.background=MT===i?'#ffd86b':'#3a4468';t.style.color=MT===i?'#14193a':'#c9cfe0'});
@@ -825,7 +833,7 @@ function renderMenu(){const b=$('mbody');b.innerHTML='';[0,1,2,3,4].forEach(i=>{
   bw.append(b1,b2);b.appendChild(bw)}
  else if(MT===3){const l=lvl(),nx=Math.ceil(Math.pow(l,2)*6),pv=Math.pow(l-1,2)*6,pc=Math.max(0,Math.min(100,(xpv()-pv)/(nx-pv)*100)),hn=S.rm.filter(r=>r.h).length;
   row('<span style="font-size:26px">🎖</span><span style="flex:1"><b style="color:#ffd86b;font-size:17px">רמה '+l+' · '+title(l)+'</b><div style="height:8px;background:#ffffff22;border-radius:6px;margin-top:6px"><div style="height:8px;width:'+pc+'%;background:#ffd86b;border-radius:6px"></div></div></span>');
-  const ST=[['💰 סה"כ הרווחת','₪'+fs(S.g.te)],['📈 הכנסה לשנייה','₪'+fs(income())],['⏱ זמן משחק',Math.floor(S.g.pt/3600)+'ש׳ '+Math.floor(S.g.pt/60%60)+'ד׳'],['🏨 אזורים פתוחים',OP()+' / '+S.rm.length],['👷 עובדים',hn+' / '+S.rm.length],['⬆ שדרוגים',S.g.n.u],['🪙 טיפים','₪'+fs(S.g.tips)],['🎁 מתנות שנתת',S.g.gifts],['🏅 הישגים',ACH.filter(a=>S.g.ach[a[0]]).length+' / '+ACH.length],['👑 שיפוצים',S.g.pr+' (x'+PM().toFixed(1)+')'],['😴 מצב AFK',AFK()<1?'פעיל – הכנסה 20%':'לא']];ST.forEach(x=>row('<span style="flex:1">'+x[0]+'</span><b style="color:#ffd86b">'+x[1]+'</b>'))}
+  const ST=[['💰 סה"כ הרווחת','₪'+fs(S.g.te)],['📈 הכנסה לשנייה','₪'+fs(income())],['⏱ זמן משחק',Math.floor(S.g.pt/3600)+'ש׳ '+Math.floor(S.g.pt/60%60)+'ד׳'],['🏨 אזורים פתוחים',OP()+' / '+S.rm.length],['👷 עובדים',hn+' / '+S.rm.length],['⬆ שדרוגים',S.g.n.u],['🪙 טיפים','₪'+fs(S.g.tips)],['🎁 מתנות שנתת',S.g.gifts],['🏅 הישגים',ACH.filter(a=>S.g.ach[a[0]]).length+' / '+ACH.length],['👑 שיפוצים',S.g.pr+' (x'+PM().toFixed(1)+')'],['😴 מצב AFK',AFK()<1?'פעיל – הכנסה 20%':'לא']];ST.forEach(x=>row('<span style="flex:1">'+x[0]+'</span><b style="color:#ffd86b">'+x[1]+'</b>'));row('🏷 תארים לשם שלך (לחץ לבחירה)','#ffd86b');TT.forEach(t=>{const ok=t[3](),d=row('<span style="font-size:20px">'+(ok?t[1]:'🔒')+'</span><span style="flex:1">'+t[2]+'</span>'+(S.g.ti===t[0]&&ok?'<span style="color:#2fe38a">✓</span>':''),ok?'#fff':'#8b90a3');if(ok){d.style.cursor='pointer';d.onclick=()=>{S.g.ti=S.g.ti===t[0]?'':t[0];saveNow();renderMenu()}}})}
  else{THEMES.forEach((t,i)=>{const d=row('<span style="flex:1">'+t[0]+'</span>'+((S.g.th||0)===i?'<span style="color:#2fe38a">✓</span>':''),'#fff');d.style.cursor='pointer';d.onclick=()=>{S.g.th=i;applyTheme();saveNow();renderMenu()}})}}
 $('mbtn').onclick=()=>{renderMenu();$('mpanel').style.display='block'};$('mclose').onclick=()=>$('mpanel').style.display='none';[0,1,2,3,4].forEach(i=>$('mt'+i).onclick=()=>{MT=i;renderMenu()});
 
@@ -848,6 +856,36 @@ setInterval(()=>{if(!LOGGED||VIS||S.g.tut<3){$('qb').style.display='none';return
  if(AFK()===1&&!document.hidden)S.g.cb+=.5;const left=Math.max(0,300-S.g.cb);
  $('qc').textContent=S.g.cb>=300?'🧰 מוכן!':'🧰 '+Math.floor(left/60)+':'+String(Math.floor(left%60)).padStart(2,'0');
  if(S.g.cb>=300&&!CBP){CBP=1;toast('chest'+Date.now(),'🧰 הקופה מוכנה! לפתוח?',()=>{S.g.cb=0;CBP=0;const x=Math.random(),n=Date.now();if(x<.5){const a=Math.round(income()*(400+Math.random()*600));S.cash+=a;note('🧰 קופה: +₪'+fs(a))}else if(x<.8){S.g.bEnd=Math.max(S.g.bEnd,n)+12e4;S.g.bM=Math.max(Date.now()<S.g.bEnd?S.g.bM:1,4);note('🧰 קופה: טיפים x4 ל־2 דקות')}else{S.g.sEnd=Math.max(S.g.sEnd,n)+18e4;const a=Math.round(income()*200);S.cash+=a;note('🧰 קופה: צוות מוטיבציה + ₪'+fs(a))}sfx.ding();burst(me.position.clone().setY(1.6),14);saveNow()},null)}},500);
+
+addEventListener('orientationchange',()=>setTimeout(fit,250));if(window.visualViewport)visualViewport.addEventListener('resize',fit);addEventListener('load',()=>setTimeout(()=>{fit();scrollTo(0,1)},300));
+// === v2.8: season, duel, golden guest, overtakes, titles ===
+const WK=()=>Math.floor((Date.now()/864e5+4)/7);
+const seasonScore=()=>{const q=S.g.se;return q&&q.i===WK()?Math.max(0,S.g.te-q.b):0};
+const DW=18e5,DL=6e5,dwId=()=>Math.floor(Date.now()/DW),inDuel=()=>Date.now()%DW<DL;
+const duelScore=()=>{const c=S.g.cw;return c&&c.i===dwId()&&inDuel()?Math.max(0,S.g.te-c.b):(c&&c.i===dwId()?(c.f||0):0)};
+const TT=[['champ','🥇','אלוף השבוע',()=>S.g.sw>=1],['duel','⚔','לוחם הדו-קרב',()=>S.g.dw>=1],['loyal','🔥','נאמן (7 ימים)',()=>(S.g.dr&&S.g.dr.s>=7)],['gold','⭐','צייד האורחים הזהובים',()=>S.g.gg>=5],['mil','💎','מיליארדר',()=>S.g.te>=1e9],['vip','👑','VIP (שיפוץ)',()=>S.g.pr>=1]];
+const myTT=()=>{const t=TT.find(x=>x[0]===S.g.ti&&x[3]());return t?t[1]:''};
+function rankList(key,idKey,id){const all={};for(const k in DIR)all[k]=DIR[k];for(const k in PEERS)all[k]=Object.assign({},all[k]||{},PEERS[k]);const L=[];for(const k in all){const o=all[k];if(k===MYID)continue;if(o[idKey]===id&&o[key]>0)L.push({id:k,n:o.n||'אורח',v:o[key]})}L.push({id:MYID,n:NAME,v:key==='ss'?seasonScore():duelScore(),me:1});L.sort((a,b)=>b.v-a.v);return L}
+let AHEAD=null,AHT=Date.now(),LDUEL=0;
+setInterval(()=>{if(!LOGGED||VIS)return;const w=WK();
+ if(!S.g.se)S.g.se={i:w,b:S.g.te,r:0};
+ if(S.g.se.i!==w){const r=S.g.se.r||0,inc=income();let rw=0,m='';if(r===1){rw=inc*6000;S.g.sw++;S.g.ti=S.g.ti||'champ';m='🥇 ניצחת בעונה השבועית! +₪'}else if(r>=2&&r<=3){rw=inc*3000;m='🏅 סיימת במקום '+r+' בעונה! +₪'}else if(r>0){rw=inc*1000;m='🎖 סיימת את העונה. +₪'}
+  S.g.se={i:w,b:S.g.te,r:0};AHEAD=null;if(rw>0){rw=Math.round(rw);S.cash+=rw;toast('se'+w,m+fs(rw),()=>{},null);sfx.ding();burst(me.position.clone().setY(1.6),16)}toast('sn'+w,'🏆 עונה חדשה התחילה! התחרו על המקום הראשון',()=>{},null);saveNow()}
+ const L=rankList('ss','se',w);S.g.se.r=Math.max(1,L.findIndex(x=>x.me)+1);
+ if(Date.now()-AHT>25e3){const ah=new Set(L.slice(0,S.g.se.r-1).map(x=>x.id));if(AHEAD){ah.forEach(id=>{if(!AHEAD.has(id)){const o=L.find(x=>x.id===id);note('😮 '+o.n+' עקף אותך בדירוג השבועי!');sfx.dn&&sfx.dn()}})}AHEAD=ah}
+ // duel
+ const d=dwId();
+ if(inDuel()){if(!S.g.cw||S.g.cw.i!==d){S.g.cw={i:d,b:S.g.te,f:0,r:0};toast('dl'+d,'⚔ דו-קרב 10 דקות התחיל! מי מרוויח הכי הרבה?',()=>{},null)}const D=rankList('cs','cw',d);S.g.cw.r=D.findIndex(x=>x.me)+1;S.g.cw.f=Math.max(0,S.g.te-S.g.cw.b);S.g.cw.n=D.length}
+ else if(S.g.cw&&S.g.cw.i<d&&S.g.cw.i!==LDUEL&&(S.g.cw.f||0)>0){LDUEL=S.g.cw.i;const r=S.g.cw.r||1,n=S.g.cw.n||1;if(n>1&&r===1){const a=Math.round(income()*1500);S.cash+=a;S.g.dw++;note('⚔ ניצחת בדו-קרב! +₪'+fs(a));sfx.ding()}else if(S.g.cw.f>0){const a=Math.round(income()*300);S.cash+=a;note('⚔ סיום דו-קרב (מקום '+r+') +₪'+fs(a))}S.g.cw.f=0;saveNow()}
+},5000);
+// golden guest
+let TRAIL=[],GG=null;
+setInterval(()=>{if(!LOGGED||VIS)return;TRAIL.push({f:F,x:me.position.x,z:me.position.z});if(TRAIL.length>40)TRAIL.shift()},1000);
+setInterval(()=>{if(!LOGGED||VIS||S.g.tut<3){if(GG){scene.remove(GG.p);scene.remove(GG.lb);GG=null}return}
+ if(!GG){if(Math.random()<.012&&AFK()===1&&!document.hidden){const c=TRAIL.filter(t=>t.f===F&&Math.hypot(t.x-me.position.x,t.z-me.position.z)>5);if(c.length){const t=c[Math.floor(Math.random()*c.length)];const p=person({shirt:0xffc400,sleeve:0xffc400,pants:0xb8860b,hair:0xfff3b0,skin:0xf0c8a0,style:'short'});p.scale.setScalar(1.1);p.position.set(t.x,0,t.z);scene.add(p);const lb=label();lb.scale.set(2.2,.8,1);setLabel(lb,'⭐ אורח זהב','#7a5a00dd','#fff3b0');scene.add(lb);GG={p,lb,f:t.f,t:Date.now(),x:t.x,z:t.z,ph:0};note('⭐ אורח זהב הופיע! רוץ אליו ב־25 שניות');sfx.ding()}}return}
+ const g=GG,age=(Date.now()-g.t)/1000;g.ph+=.25;g.p.visible=g.lb.visible=g.f===F;g.p.position.y=Math.abs(Math.sin(g.ph*2))*.25;g.lb.position.set(g.x,2.9,g.z);
+ if(g.f===F&&Math.hypot(me.position.x-g.x,me.position.z-g.z)<1.6){const a=Math.round(income()*(150+Math.random()*250));S.cash+=a;S.g.bEnd=Math.max(S.g.bEnd,Date.now())+3e4;S.g.bM=Math.max(Date.now()<S.g.bEnd-3e4?S.g.bM:1,3);S.g.gg++;note('⭐ תפסת אורח זהב! +₪'+fs(a)+' וטיפים x3');sfx.ding();burst(g.p.position.clone().setY(1.6),18);scene.remove(g.p);scene.remove(g.lb);GG=null;saveNow();return}
+ if(age>25){scene.remove(g.p);scene.remove(g.lb);GG=null}},250);
 // events
 let NEV=Date.now()+60000;
 setInterval(()=>{if(!LOGGED||VIS||S.g.tut<3||Date.now()<NEV)return;NEV=Date.now()+(55+Math.random()*65)*1000;const k='ev'+Date.now(),I=()=>income(),n=Date.now(),E=[
