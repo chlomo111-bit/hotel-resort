@@ -427,20 +427,82 @@ const parking=(()=>{
   vt.userData.arms.forEach((a,j)=>a.rotation.x=-.8+Math.sin(t*3+j*2)*.3);
   wk.forEach(w=>{const mv=goto(w.p,w.tx,w.tz,1.4,dt);if(!mv){w.tx=-3.5+Math.random()*7;w.tz=-.2+Math.random()*3.5}gait(w.p,dt,mv,.6)})}}})();
 
+const NEWR=(()=>{
+ const R=[],T=(a,b)=>M(0xffffff,{map:tileTex(a,b,5,8)}),EM=(c,i=1)=>new THREE.MeshStandardMaterial({color:0x111111,emissive:c,emissiveIntensity:i}),GL=(c,o)=>new THREE.MeshStandardMaterial({color:c,transparent:true,opacity:o}),
+ wander=(g,n,x0,x1,z0,z1,sc=.9)=>{const a=[];for(let k=0;k<n;k++){const p=guest();p.scale.setScalar(sc);p.position.set(x0+Math.random()*(x1-x0),0,z0+Math.random()*(z1-z0));g.add(p);a.push({p,tx:p.position.x,tz:p.position.z})}return a},
+ stepW=(a,dt,x0,x1,z0,z1)=>a.forEach(w=>{const mv=goto(w.p,w.tx,w.tz,1.3,dt);if(!mv){w.tx=x0+Math.random()*(x1-x0);w.tz=z0+Math.random()*(z1-z0)}gait(w.p,dt,mv,.6)});
+ /* ===== קומה 3: קניות ===== */
+ {const g=mkRoomUp(0,3,T('#e8e2d0','#d9d2bd'),0xf3efe2,0x2f8f4a,0x2f8f4a);addElevator(g);const pc=[0xe53935,0xffd86b,0x43a047,0x2f4fe0,0xff8a3d,0xffffff],ob=[];
+  for(let r=0;r<3;r++){const z=-5.6+r*2.3;box(7,1.9,.5,M(0xcfd3da),-.6,.95,z,g);for(let h=0;h<3;h++)for(let k=0;k<14;k++)box(.4,.3,.3,M(pc[(k+r+h)%6]),-3.9+k*.5,.5+h*.6,z+.38,g);ob.push([-4.2,3.0,z-.5,z+.6])}
+  box(1.5,.9,2.2,M(0x7a5a3a),4.2,.45,-4.6,g);box(1.5,.9,2.2,M(0x7a5a3a),4.2,.45,-1.4,g);ob.push([3.4,5.0,-5.8,-3.4],[3.4,5.0,-2.6,-.2]);
+  const cs=staff();cs.position.set(3.2,0,-4.6);g.add(cs);const sh=wander(g,4,-4,3,-4.5,.5),cart=sh.map(w=>{const c=box(.6,.35,.5,M(0x9aa0ab),0,.45,.5,w.p);return c});
+  R.push({g,ob,update(dt,t){stepW(sh,dt,-4,3,-4.5,.5);cs.userData.arms.forEach((a,j)=>a.rotation.x=-.8+Math.sin(t*3+j*2)*.25)}})}
+ {const g=mkRoomUp(1,3,T('#2a2038','#231a30'),0x2a2038,0x6a2a5a,0xffd86b),ob=[],mq=[];
+  for(let k=0;k<4;k++){const x=-3.6+k*2.4;box(1.6,.5,1,M(0x1a1a1a),x,.25,-6.8,g);box(1.5,1.6,.9,GL(0xaaddff,.3),x,1.3,-6.8,g);const gem=box(.3,.3,.3,EM([0xff4fa3,0x44ffcc,0xffd86b,0x7fd0ff][k],1.4),x,1.3,-6.8,g);mq.push(gem);ob.push([x-.9,x+.9,-7.4,-6.2])}
+  for(let k=0;k<3;k++){const m=new THREE.Group();cyl(.25,.3,1.1,M([0xe53935,0x2f4fe0,0xffd86b][k]),0,.9,0,m,10);add(new THREE.Mesh(new THREE.SphereGeometry(.17,10,8),M(0xf0d8c0)),m,0,1.65,0);box(.7,.08,.7,M(0x333),0,.04,0,m);m.position.set(-3+k*3,0,-2.2);g.add(m)}
+  const ru=cyl(1.1,1.1,.2,M(0xffd86b,{emissive:0x553300}),3.6,.1,1.2,g,24);ob.push([2.5,4.7,.1,2.3]);
+  const sh=wander(g,3,-4,1.5,-1,3,.9);R.push({g,ob,update(dt,t){stepW(sh,dt,-4,1.5,-1,3);ru.rotation.y=t*.6;mq.forEach((m,i)=>m.rotation.y=t*2+i)}})}
+ {const g=mkRoomUp(2,3,T('#3a2a1a','#2f2214'),0x3a2a1a,0x7a3a1a,0xff8a3d,true),ob=[],aw=[];
+  for(let k=0;k<3;k++){const x=-3.2+k*3.2;box(2.2,.9,1.1,M(0x6a4a2a),x,.45,-5.6,g);for(let s=0;s<6;s++)box(.4,.14,1.5,M(s%2?0xffffff:0xe53935),x-1+s*.4+.2,2.4,-5.8,g);for(const dx of[-1,1])cyl(.05,.05,2.4,M(0x333),x+dx,1.2,-5.0,g,6);for(let b=0;b<4;b++)add(new THREE.Mesh(new THREE.SphereGeometry(.22,8,6),M(0xd9a05a)),g,x-.6+b*.4,1.05,-5.6);ob.push([x-1.2,x+1.2,-6.3,-4.9]);const v=staff();v.position.set(x,0,-6.4);g.add(v);aw.push(v)}
+  const bl=[0xe53935,0xffd86b,0x2f4fe0,0x43a047].map((c,k)=>add(new THREE.Mesh(new THREE.SphereGeometry(.3,10,8),new THREE.MeshStandardMaterial({color:c})),g,-3.5+k*2.3,3,.5));
+  const sh=wander(g,4,-4,4,-3,3);R.push({g,ob,update(dt,t){stepW(sh,dt,-4,4,-3,3);bl.forEach((b,i)=>b.position.y=3+Math.sin(t*1.3+i)*.3);aw.forEach((v,i)=>v.userData.arms.forEach((a,j)=>a.rotation.x=-.9+Math.sin(t*3+i+j)*.3))}})}
+ /* ===== קומה 4: הים ===== */
+ {const g=mkRoomUp(0,4,T('#2f5e7a','#274f68'),0x15354a,0x0b2a3a,0xffffff);addElevator(g);const ob=[];
+  box(8.6,.12,3.4,GL(0x2a9ad8,.7),0,.05,-5.9,g);const hull=box(8,1.5,2.2,M(0xf5f5f5),0,1.1,-6.2,g);box(8.1,.5,2.3,M(0x14274a),0,.55,-6.2,g);box(6.6,1.2,1.6,M(0xffffff),-.4,2.45,-6.2,g);box(4,.9,1.2,M(0xffffff),-.8,3.4,-6.2,g);
+  const fn=cyl(.4,.45,1.3,M(0xe53935),1,4,-6.2,g,12);cyl(.42,.42,.3,M(0x111),1,4.7,-6.2,g,12);for(let k=0;k<9;k++)box(.3,.3,.05,EM(0xffd86b,.9),-3.4+k*.8,1.3,-5.06,g);
+  ob.push([-4.3,4.3,-7.4,-4.8]);const cap=staff();cap.position.set(3.6,0,-4.3);g.add(cap);const sh=wander(g,4,-4,3,-3.5,2);
+  const wv=[];for(let k=0;k<8;k++)wv.push(box(1,.12,.5,GL(0x7fd0ff,.8),-3.8+k*1.1,.13,-4.4,g));
+  R.push({g,ob,update(dt,t){stepW(sh,dt,-4,3,-3.5,2);wv.forEach((w,i)=>w.position.y=.13+Math.sin(t*2+i)*.07);cap.userData.arms[1].rotation.x=-1.3+Math.sin(t*4)*.5}})}
+ {const g=mkRoomUp(1,4,T('#2f5e7a','#274f68'),0x15354a,0x0b2a3a,0xffffff),ob=[];
+  box(9,.1,6,GL(0x2a9ad8,.8),0,.06,-4.2,g);for(let k=0;k<3;k++)box(.9,.18,6.5,M(0x8a5a2a),-3.5+k*3.4,.28,-4.2,g);ob.push([-5.2,5.2,-7.6,-6.9]);
+  const yt=[0,1,2].map(k=>{const y=new THREE.Group();box(1.1,.4,2.4,M(0xffffff),0,.3,0,y);box(.8,.3,1,M(0x14274a),0,.6,-.2,y);cyl(.05,.05,2.2,M(0x888),0,1.4,.2,y,6);const sl=box(.05,1.7,1,M([0xe53935,0xffd86b,0x2f4fe0][k]),0,1.5,.8,y);y.position.set(-2.6+k*2.6,.1,-4.4+(k%2)*1.2);g.add(y);return y});
+  const sh=wander(g,3,-4,4,.5,3.5),cp=staff();cp.position.set(4,0,-1.5);g.add(cp);
+  R.push({g,ob,update(dt,t){stepW(sh,dt,-4,4,.5,3.5);yt.forEach((y,i)=>{y.position.y=.1+Math.sin(t*1.4+i)*.1;y.rotation.z=Math.sin(t*1.1+i)*.06});cp.userData.arms.forEach((a,j)=>a.rotation.x=-.8+Math.sin(t*3+j)*.25)}})}
+ {const g=mkRoomUp(2,4,T('#c9b78a','#bfae80'),0x15354a,0x0b2a3a,0xffd86b,true),ob=[];
+  box(9,.1,3.5,GL(0x2a9ad8,.8),0,.06,-6.2,g);for(let k=0;k<6;k++)cyl(1,1.1,.6,M(k%2?0xffffff:0xe53935),2.8,.3+k*.6,-3,g,16).scale.set(1-k*.1,1,1-k*.1);
+  const bm=add(new THREE.Mesh(new THREE.ConeGeometry(3.2,2.4,20,1,true),new THREE.MeshBasicMaterial({color:0xfff2b0,transparent:true,opacity:.28,side:THREE.DoubleSide})),g,2.8,4.6,-3);bm.rotation.z=Math.PI/2;
+  add(new THREE.Mesh(new THREE.SphereGeometry(.5,12,8),EM(0xffee88,1.6)),g,2.8,4.1,-3);ob.push([1.6,4,-4.2,-1.8]);
+  box(1.5,.7,1,M(0x7a5a2a),-3.2,.35,-2,g);const gl=box(1,.15,.7,EM(0xffd86b,1.4),-3.2,.8,-2,g);ob.push([-4,-2.4,-2.6,-1.4]);
+  const dv=wander(g,3,-4.5,1,-1,3.5),ds=staff();ds.position.set(-1.5,0,-1.4);g.add(ds);
+  R.push({g,ob,update(dt,t){stepW(dv,dt,-4.5,1,-1,3.5);bm.rotation.y=t*1.2;gl.material.emissiveIntensity=1+Math.sin(t*3)*.5;ds.userData.arms.forEach((a,j)=>a.rotation.x=-.8+Math.sin(t*3+j)*.25)}})}
+ /* ===== קומה 5: החלל ===== */
+ {const g=mkRoomUp(0,5,T('#1b1d2b','#13151f'),0x0c0e1a,0x2a2f5a,0x7fd0ff);addElevator(g);const ob=[],st=[];
+  box(8.6,3.4,.1,M(0x050610),0,2.3,-7.9,g);for(let k=0;k<50;k++)st.push(box(.06,.06,.06,EM(0xffffff,1.5),-4.2+Math.random()*8.4,.7+Math.random()*3,-7.82,g));
+  const pl=add(new THREE.Mesh(new THREE.SphereGeometry(1.1,20,14),new THREE.MeshStandardMaterial({color:0x3a7ad8,emissive:0x0a2a5a})),g,2,2.4,-7.4);const rg=add(new THREE.Mesh(new THREE.TorusGeometry(1.7,.06,6,40),M(0xd8c89a)),g,2,2.4,-7.4);rg.rotation.x=1.3;
+  for(let k=0;k<3;k++){cyl(.8,.8,2.2,M(0xdfe4ee),-3+k*2,1.1,-4.6,g,16);box(1.4,.1,.4,EM(0x44ffcc,1.2),-3+k*2,1.6,-3.8,g);ob.push([-3.9+k*2,-2.1+k*2,-5.4,-3.8])}
+  const sh=wander(g,4,-4,4,-2.5,3);R.push({g,ob,update(dt,t){stepW(sh,dt,-4,4,-2.5,3);pl.rotation.y=t*.2;rg.rotation.z=t*.1;st.forEach((s,i)=>s.material.emissiveIntensity=1+Math.sin(t*2+i)*.8)}})}
+ {const g=mkRoomUp(1,5,T('#1b1d2b','#13151f'),0x0c0e1a,0x2a2f5a,0xb48cff),ob=[];
+  const sun=add(new THREE.Mesh(new THREE.SphereGeometry(.55,16,12),EM(0xffcc44,1.4)),g,0,2.4,-3.5),pls=[0x7fd0ff,0xe57a4a,0x43a047,0xb48cff].map((c,k)=>({m:add(new THREE.Mesh(new THREE.SphereGeometry(.18+k*.04,10,8),new THREE.MeshStandardMaterial({color:c})),g,0,2.4,-3.5),r:1+k*.75,v:1.1/(k+1)}));
+  const tl=new THREE.Group();cyl(.25,.35,1.6,M(0xdfe4ee),0,1.4,0,tl,12).rotation.z=.9;box(.5,.9,.5,M(0x333),0,.45,0,tl);tl.position.set(-3.4,0,1);g.add(tl);ob.push([-4.2,-2.6,.2,1.8]);
+  box(1.6,.8,3.4,M(0x2a2f5a),3.6,.4,-1,g);const cn=box(.9,.3,.06,EM(0x44ffcc,1.3),3.6,.9,-1,g);ob.push([2.7,4.5,-2.8,.8]);
+  const sh=wander(g,3,-4,4,.5,4),as=staff();as.position.set(4.3,0,-3);g.add(as);
+  R.push({g,ob,update(dt,t){stepW(sh,dt,-4,4,.5,4);pls.forEach(p=>{p.m.position.set(Math.cos(t*p.v)*p.r,2.4+Math.sin(t*p.v*.8)*.25,-3.5+Math.sin(t*p.v)*p.r*.8)});sun.rotation.y=t;as.userData.arms.forEach((a,j)=>a.rotation.x=-.8+Math.sin(t*3+j)*.25)}})}
+ {const g=mkRoomUp(2,5,T('#1b1d2b','#13151f'),0x0c0e1a,0x2a2f5a,0x44ffcc,true),ob=[];
+  const core=cyl(.8,.8,2.8,new THREE.MeshStandardMaterial({color:0x222,emissive:0x44ffcc,emissiveIntensity:1.4,transparent:true,opacity:.8}),0,1.6,-4,g,18);cyl(1.2,1.4,.4,M(0x333a55),0,.2,-4,g,18);cyl(1.2,1.2,.3,M(0x333a55),0,3.2,-4,g,18);
+  const rs=[0,1,2].map(k=>{const r=add(new THREE.Mesh(new THREE.TorusGeometry(1.15+k*.22,.05,6,30),EM(0xb48cff,1.2)),g,0,1.2+k*.6,-4);r.rotation.x=Math.PI/2;return r});ob.push([-1.5,1.5,-5.5,-2.5]);
+  for(const x of[-3.6,3.6]){box(1.4,1.1,1.2,M(0x2a2f5a),x,.55,-6,g);box(1,.35,.06,EM(0xffd86b,1.2),x,1.2,-5.4,g);ob.push([x-.8,x+.8,-6.7,-5.3])}
+  const sc=[staff(),staff()];sc[0].position.set(-2.2,0,-1.2);sc[1].position.set(2.2,0,-1.2);sc.forEach(s=>g.add(s));const sh=wander(g,3,-4,4,0,3.5);
+  R.push({g,ob,update(dt,t){stepW(sh,dt,-4,4,0,3.5);core.material.emissiveIntensity=1.2+Math.sin(t*3)*.5;rs.forEach((r,i)=>r.rotation.z=t*(.8+i*.4));sc.forEach((s,i)=>s.userData.arms.forEach((a,j)=>a.rotation.x=-.8+Math.sin(t*3+i+j)*.25))}})}
+ /* חיבור: מיקום עמודה + הזזת מכשולים לקואורדינטות עולם */
+ const cols=[0,1,2,0,1,2,0,1,2];R.forEach((r,i)=>{const c=cols[i];r.ob=(r.ob||[]).map(o=>[o[0]+c*X,o[1]+c*X,o[2],o[3]])});
+ return R})();
 addElevator(lobby.g);
-rooms.push(lobby,resto,pool,casino,club,spa,theatre,park,heli,parking,suite,skybar,cinema,arcade,bowling,aquarium);
+rooms.push(lobby,resto,pool,casino,club,spa,theatre,park,heli,parking,suite,skybar,cinema,arcade,bowling,aquarium,...NEWR);
 
 const fm=n=>Math.floor(n).toLocaleString('he-IL');
-const fs0=n=>n>=1e9?(n/1e9).toFixed(1)+'B':n>=1e7?(n/1e6).toFixed(1)+'M':fm(n);const fs=n=>'\u2066'+fs0(n)+'\u2069';
+const SUF=['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc'];const fs0=n=>{if(n<1e7)return fm(n);let i=Math.min(SUF.length-1,Math.floor(Math.log10(n)/3));return (n/Math.pow(1000,i)).toFixed(1)+SUF[i]};const fs=n=>'\u2066'+fs0(n)+'\u2069';
 const $=id=>document.getElementById(id);
 const RM=[['לובי וקבלה','פקיד',8,0,0,0],['מסעדת שף','שף',20,0,0,1],['בריכה ובר','מציל',45,0,0,2],['קזינו','מנהל',110,4000,0,3],['מועדון לילה','דיג׳יי',260,20000,0,4],['ספא וכושר','מאמן',600,90000,0,5],['תיאטרון','במאי',1300,400000,0,6],['פארק שעשועים','מנהל פארק',2800,1.8e6,0,7],['גג ומסוקים','טייס',6000,8e6,0,8],['חניון VIP','שמש חניה',9000,2.5e7,0,9],
-['סוויטה מלכותית','משרתת',14000,0,1,0],['בר גג','ברמן',30000,4e7,1,1],['קולנוע VIP','קופאי',65000,1.2e8,1,2],['ארקייד','טכנאי',140000,0,2,0],['באולינג','מדריך',300000,9e8,2,1],['אקווריום','צוללן',650000,2.5e9,2,2]];
-const FLC=[0,1.5e8,3.5e9],FN=['קומת קרקע','קומה 1 · הפאר','קומה 2 · הילדים והים'],COLS=[10,3,3],MAXL=20;
-const S={g:{tips:0,gifts:0,bEnd:0,bM:1,sEnd:0,pr:0,n:{c:0,u:0,h:0,f:0},ach:{},dr:{d:'',s:0},th:0,tut:0,xp:0,te:0,pt:0,lv:1},cash:800,t:0,fl:[1,0,0],rm:RM.map(r=>({n:r[0],w:r[1],rate:r[2],lock:r[3]*20,fl:r[4],col:r[5],open:r[3]===0&&r[4]===0,l:1,h:0,p:0}))};
+['סוויטה מלכותית','משרתת',14000,0,1,0],['בר גג','ברמן',30000,4e7,1,1],['קולנוע VIP','קופאי',65000,1.2e8,1,2],['ארקייד','טכנאי',140000,0,2,0],['באולינג','מדריך',300000,9e8,2,1],['אקווריום','צוללן',650000,2.5e9,2,2],
+['סופרמרקט ענק','מנהל סניף',1.4e6,0,3,0],['קניון בוטיקים','מוכרת',3e6,9e9,3,1],['שוק מאפים','אופה',6.5e6,2e10,3,2],
+['ספינת תענוגות','קפטן',1.4e7,0,4,0],['מרינת יאכטות','קברניט',3e7,9e10,4,1],['מגדלור וצלילה','מדריך צלילה',6.5e7,2e11,4,2],
+['תחנת חלל','אסטרונאוט',1.4e8,0,5,0],['מצפה כוכבים','אסטרונום',3e8,9e11,5,1],['מעבדת אנרגיה','מדען',6.5e8,2e12,5,2]];
+const FLC=[0,1.5e8,3.5e9,8e10,2e12,5e13],FN=['קומת קרקע','קומה 1 · הפאר','קומה 2 · הילדים והים','קומה 3 · הקניות','קומה 4 · הים הפתוח','קומה 5 · החלל'],COLS=[10,3,3,3,3,3],NF=6,MAXL=1e9;
+const S={g:{tips:0,gifts:0,bEnd:0,bM:1,sEnd:0,pr:0,n:{c:0,u:0,h:0,f:0},ach:{},dr:{d:'',s:0},th:0,tut:0,xp:0,te:0,pt:0,lv:1},cash:800,t:0,fl:[1,0,0,0,0,0],rm:RM.map(r=>({n:r[0],w:r[1],rate:r[2],lock:r[3]*20,fl:r[4],col:r[5],open:r[3]===0&&r[4]===0,l:1,h:0,p:0}))};
 let F=0;
 const rIdx=(f,c)=>S.rm.findIndex(r=>r.fl===f&&r.col===c);
 const REV=['"הסוויטה מדהימה, נחזור!" דנה','"הקזינו מרשים אבל איטי" יוסי','"אוכל טעים, שירות איטי" מיכל','"הבריכה מושלמת לילדים" רוני','"הצוות הכי נחמד" אורן','"המועדון היה אש" נועה','"הנוף מהבר פשוט מטורף" שיר','"האקווריום הילדים לא רצו לצאת" אבי'];
-const upC=r=>Math.round(r.rate*60*Math.pow(1.45,r.l-1)),hiC=r=>r.rate*120;
+const LM=r=>Math.pow(2,Math.floor(r.l/10)),upC=r=>Math.min(1e300,Math.round(r.rate*60*Math.pow(1.45,Math.min(r.l-1,1500)))),hiC=r=>r.rate*120;
 let AC=null,SND=true;try{SND=localStorage.getItem('hotelSnd')!=='0'}catch(e){}
 function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
 function tone(f,d=.12,t='sine',v=.07,dl=0){if(!SND)return;const a=ac();if(!a)return;const o=a.createOscillator(),g=a.createGain(),n=a.currentTime+dl;o.type=t;o.frequency.setValueAtTime(f,n);g.gain.setValueAtTime(v,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(a.destination);o.start(n);o.stop(n+d+.02)}
@@ -462,15 +524,15 @@ const pads=[],upads=[],epads=[];
 S.rm.forEach((r,i)=>{let arr;if(r.fl===0&&r.col<3)arr=PPg[r.col].map(a=>[r.col*X+a[0],a[1]]);else{const xs=r.col===0?[-2.9,-.7,1.5]:[-2.6,0,2.6];arr=xs.map(x=>[r.col*X+x,5])}
  ['c','u','h'].forEach((k,j)=>pads.push(mkPad(k,arr[j][0],arr[j][1],i)));
  if(r.lock>0)upads.push(mkPad('k',(r.col-1)*X+3.7,2.9,i))});
-for(let f=0;f<3;f++){if(f<2){const p=mkPad('e',3.2,4.6,f);p.f=f;p.d=1;epads.push(p)}if(f>0){const p=mkPad('e',3.2,6.5,f);p.f=f;p.d=-1;epads.push(p)}}
-const OBF=[[],[],[]];const OB=OBF[0];
+for(let f=0;f<NF;f++){if(f<NF-1){const p=mkPad('e',3.2,4.6,f);p.f=f;p.d=1;epads.push(p)}if(f>0){const p=mkPad('e',3.2,6.5,f);p.f=f;p.d=-1;epads.push(p)}}
+const OBF=[[],[],[],[],[],[]];const OB=OBF[0];
 OB.push([-2.9,2.9,-8,-3.45],[2.3,5,-1.7,.9]);
 [[-2.7,-3.6],[2.6,-3.8],[-2.8,.6],[2.8,.8],[-2.6,4.8],[2.7,5]].forEach(([x,z])=>OB.push([X+x-1.9,X+x+1.9,z-1.25,z+1.25]));
 OB.push([X-4.6,X+4.6,-8,-6.5]);
 OB.push([2*X-3.2,2*X+2.6,-.25,8]);[-3.2,.4,3.8].forEach(x=>OB.push([2*X+x-.6,2*X+x+.6,-5.6,-2.8]));
 OB.push([4,5.1,3.1,6.7]);
 rooms.forEach((r,i)=>(r.ob||[]).forEach(o=>OBF[S.rm[i].fl].push(o)));
-for(let f=0;f<3;f++)for(let c=1;c<COLS[f];c++){const x=c*X-X/2;OBF[f].push([x-.2,x+.2,-8,1.5],[x-.2,x+.2,5.5,8])}
+for(let f=0;f<NF;f++)for(let c=1;c<COLS[f];c++){const x=c*X-X/2;OBF[f].push([x-.2,x+.2,-8,1.5],[x-.2,x+.2,5.5,8])}
 const GATE={};S.rm.forEach((r,i)=>{if(r.lock>0){const x=r.col*X-X/2,o=[x-.3,x+.3,1.5,5.5];OBF[r.fl].push(o);GATE[i]=o}});
 const hit=(x,z)=>{if(x<-4.8||x>COLS[F]*X-5.6||z<-7.4||z>7.6)return true;for(const o of OBF[F])if(x>o[0]-.35&&x<o[1]+.35&&z>o[2]-.35&&z<o[3]+.35)return true;return false};
 const K={};addEventListener('keydown',e=>K[e.key.toLowerCase()]=1);addEventListener('keyup',e=>K[e.key.toLowerCase()]=0);
@@ -524,7 +586,7 @@ function stepPads(dt){
 const ELX=2,ELZ=5.5,AG=[];
 function openRooms(f){return S.rm.filter(r=>r.fl===f&&r.open)}
 function plan(a){
- const fl=[1,2].filter(f=>S.fl[f]&&openRooms(f).length),up=fl.length&&Math.random()<.8,P=[];
+ const fl=[1,2,3,4,5].filter(f=>S.fl[f]&&openRooms(f).length),up=fl.length&&Math.random()<.8,P=[];
  P.push({x:-.5+Math.random(),z:-2.3},{wait:2});
  if(up){const f=fl[Math.floor(Math.random()*fl.length)],rs=openRooms(f),r=rs[Math.floor(Math.random()*rs.length)];
   P.push({x:ELX,z:ELZ},{lift:f},{x:r.col*X+(Math.random()*3-1.5),z:3.3},{x:r.col*X+(Math.random()*4-2),z:1+Math.random()*2},{wait:3+Math.random()*3},{x:ELX,z:ELZ},{lift:0})}
@@ -545,7 +607,7 @@ function hud(){
  const inc=income(),hn=S.rm.filter(r=>r.h).length,n=Math.min(5,3+Math.floor(hn/3)),cr=curRoom(),r=S.rm[Math.max(0,cr)];
  $('cash').textContent='₪ '+fs(S.cash);$('inc').textContent='₪ '+fs(inc);
  $('st').textContent='★'.repeat(n)+'☆'.repeat(5-n);$('rv').textContent=REV[Math.floor(S.t/8)%REV.length];
- $('rn').textContent=FN[F]+' · '+r.n;$('rl').textContent=(r.l>=MAXL?'רמה מקסימלית':'רמה '+r.l)+(r.h?' · '+r.w+' עובד אוטומטית':' · צריך לאסוף בעצמך');
+ $('rn').textContent=FN[F]+' · '+r.n;$('rl').textContent=('רמה '+r.l+' · x'+LM(r)+' (עוד '+(10-r.l%10)+' לבונוס)')+(r.h?' · '+r.w+' עובד אוטומטית':' · צריך לאסוף בעצמך');
  document.querySelectorAll('#tabs button').forEach(b=>{const i=+b.dataset.i;b.classList.toggle('on',i===cr);b.style.opacity=S.rm[i].open?1:.5});
  if(cr+'/'+F!==lastKey){lastKey=cr+'/'+F;const on=document.querySelector('#tabs .on');if(on)on.scrollIntoView({inline:'center',block:'nearest'})}
  pads.forEach(p=>{const r=S.rm[p.r];let t,bg='#8b90a3',fg='#fff';
@@ -563,7 +625,7 @@ let PC0=0,LACT=Date.now(),LPX=0,LPZ=0;const AFK=()=>Date.now()-LACT>90000?.2:1;[
 function loop(){
  const dt=Math.min(clock.getDelta(),.05);S.t+=dt;
  if(LOGGED&&!VIS){S.g.pt+=dt;const d=S.cash-PC0;if(d>0)S.g.te+=d}
- S.rm.forEach(r=>{if(VIS||!r.open)return;const g=r.rate*r.l*dt*PM()*AFK()*(Date.now()<S.g.sEnd?1.25:1);if(r.h)S.cash+=g;else r.p+=g});
+ S.rm.forEach(r=>{if(VIS||!r.open)return;const g=r.rate*r.l*LM(r)*dt*PM()*AFK()*(Date.now()<S.g.sEnd?1.25:1);if(r.h)S.cash+=g;else r.p+=g});
  if(Math.hypot(me.position.x-LPX,me.position.z-LPZ)>.05){LACT=Date.now();LPX=me.position.x;LPZ=me.position.z}
  walkMe(dt);stepPads(dt);stepCoins(dt);stepAG(dt);stepGhosts(dt);
  const cc=curCol();
@@ -582,13 +644,13 @@ const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=
 let MYID='p'+Math.random().toString(36).slice(2,9);
 const GATE0={};for(const k in GATE)GATE0[k]=GATE[k].slice();
 function syncOpen(){S.rm.forEach((r,i)=>{if(r.lock>0){const o=GATE[i],g=rooms[i].g.userData.gate;if(r.open){o[0]=o[1]=o[2]=o[3]=0;if(g)g.visible=false}else{GATE[i].splice(0,4,...GATE0[i]);if(g)g.visible=true}}});buildTabs()}
-const PM=()=>1+.5*(S.g.pr||0);const income=()=>PM()*S.rm.reduce((a,r)=>a+(r.open?r.rate*r.l:0),0);
+const PM=()=>1+.5*(S.g.pr||0);const income=()=>PM()*S.rm.reduce((a,r)=>a+(r.open?r.rate*r.l*LM(r):0),0);
 const snapC=()=>({fl:S.fl.slice(),rm:S.rm.map(r=>[r.open?1:0,r.l,r.h])});
 const snapFull=()=>({n:NAME,cash:S.cash,fl:S.fl.slice(),rm:S.rm.map(r=>[r.open?1:0,r.l,r.h,Math.floor(r.p)]),ts:Date.now(),g:S.g,fr:FR,p:[F,+me.position.x.toFixed(1),+me.position.z.toFixed(1)]});
-function applySnap(sn){if(!sn||!sn.rm)return;S.fl=sn.fl.slice();sn.rm.forEach((a,i)=>{const r=S.rm[i];if(!r)return;r.open=!!a[0];r.l=a[1]||1;r.h=a[2]||0;r.p=a[3]||0});syncOpen()}
+function applySnap(sn){if(!sn||!sn.rm)return;S.fl=Array.from({length:NF},(_,i)=>sn.fl&&sn.fl[i]?1:0);S.rm.forEach((r,i)=>{if(i>=sn.rm.length){r.open=false;r.l=1;r.h=0;r.p=0}});sn.rm.forEach((a,i)=>{const r=S.rm[i];if(!r)return;r.open=!!a[0];r.l=a[1]||1;r.h=a[2]||0;r.p=a[3]||0});syncOpen()}
 let FR={};const hitAt=(f,x,z)=>{const o=F;F=f;const h=hit(x,z);F=o;return h};
 let LB=0;function saveNow(){if(VIS||!LOGGED)return;const j=JSON.stringify(snapFull());lsSet(LSK,j);if(Date.now()-LB>30000){LB=Date.now();lsSet(LSK+'.bak',j)}}
-function loadSave(){let raw=lsGet(LSK)||lsGet(LSK0);try{JSON.parse(raw)}catch(e){raw=lsGet(LSK+'.bak')||raw}if(!raw)return false;try{const sn=JSON.parse(raw);S.cash=sn.cash;FR=sn.fr||{};if(sn.g)S.g=Object.assign(S.g,sn.g);else S.g.tut=4;applySnap(sn);NAME=sn.n||NAME;if(sn.p&&sn.p[0]>=0&&sn.p[0]<3&&S.fl[sn.p[0]]&&!hitAt(sn.p[0],sn.p[1],sn.p[2]))setF(sn.p[0],sn.p[1],sn.p[2]);const el=Math.min((Date.now()-sn.ts)/1000,2*3600);let g=0;S.rm.forEach(r=>{if(r.open&&r.h)g+=r.rate*r.l*el*.2*PM()});if(g>=1){S.cash+=g;setTimeout(()=>pop(innerWidth/2,innerHeight/2,'הרווחת ₪'+fs(g)+' כשלא היית'),600)}return true}catch(e){return false}}
+function loadSave(){let raw=lsGet(LSK)||lsGet(LSK0);try{JSON.parse(raw)}catch(e){raw=lsGet(LSK+'.bak')||raw}if(!raw)return false;try{const sn=JSON.parse(raw);S.cash=sn.cash;FR=sn.fr||{};if(sn.g)S.g=Object.assign(S.g,sn.g);else S.g.tut=4;applySnap(sn);NAME=sn.n||NAME;if(sn.p&&sn.p[0]>=0&&sn.p[0]<NF&&S.fl[sn.p[0]]&&!hitAt(sn.p[0],sn.p[1],sn.p[2]))setF(sn.p[0],sn.p[1],sn.p[2]);const el=Math.min((Date.now()-sn.ts)/1000,2*3600);let g=0;S.rm.forEach(r=>{if(r.open&&r.h)g+=r.rate*r.l*LM(r)*el*.2*PM()});if(g>=1){S.cash+=g;setTimeout(()=>pop(innerWidth/2,innerHeight/2,'הרווחת ₪'+fs(g)+' כשלא היית'),600)}return true}catch(e){return false}}
 setInterval(saveNow,2000);['pagehide','beforeunload','blur'].forEach(e=>addEventListener(e,saveNow));document.addEventListener('visibilitychange',saveNow);
 /* שחקנים */
 const PEERS={},GH={},DIR={};let ROOM=null,ROOMST='מתחבר…';
@@ -657,6 +719,10 @@ function startMQTT(){ROOMST='מתחבר לשרת…';const sc=document.createEle
 (async()=>{try{if(!(window.claude&&claude.use)){startMQTT();return}
  const rm=await claude.use('room');if(!rm){startMQTT();return}
  ROOM=rm.join?rm.join('hotel-resort'):rm;if(ROOM.onPeers)ROOM.onPeers(onPeers);ROOMST='מחובר';sendPres()}catch(e){ROOMST='שגיאת חיבור'}})();
+async function nameKey(n){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('name|'+n.trim().toLowerCase()));return[...new Uint8Array(b)].slice(0,8).map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return encodeURIComponent(n.trim().toLowerCase()).replace(/%/g,'')}}
+function claimName(n,id14,key){return new Promise(res=>{let done=false;const fin=v=>{if(!done){done=true;res(v)}};startDir();const topic='shlomo-hotel-resort-v1/n/'+key,t0=Date.now();
+ const go=()=>{const cl=DQ,h=(t,m)=>{if(t!==topic)return;try{const o=JSON.parse(m.toString());cl.removeListener('message',h);clearTimeout(tm);fin(o.id===id14?'ok':'taken')}catch(e){}};cl.on('message',h);cl.subscribe(topic);const tm=setTimeout(()=>{cl.removeListener('message',h);try{cl.publish(topic,JSON.stringify({id:id14,n,ts:Date.now()}),{retain:true,qos:1})}catch(e){}fin('ok')},3500)};
+ const wait=()=>{if(DQ&&DQ.connected)return go();if(Date.now()-t0>6000)return fin('unreach');setTimeout(wait,200)};wait()})}
 async function hashAcc(n,pw){const str='hotel|'+n.trim().toLowerCase()+'|'+pw;try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h1=0xdeadbeef,h2=0x41c6ce57;for(let k=0;k<str.length;k++){const c=str.charCodeAt(k);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}return(h1>>>0).toString(16).padStart(8,'0')+(h2>>>0).toString(16).padStart(8,'0')+str.length.toString(16).padStart(4,'0')}}
 function enter(n,id,remember){NAME=n;MYID=id.slice(0,14);LSK=LSK0+'.'+MYID;lsSet('hotelName',n);if(remember)lsSet('hotelAuth',JSON.stringify({n,id}));else{try{localStorage.removeItem('hotelAuth')}catch(e){}}
  loadSave();NAME=n;LOGGED=true;startDir();ac();applyTheme();goFS();setTimeout(dailyCheck,1500);$('start').style.display='none';lastPres='';sendPres()}
@@ -665,7 +731,13 @@ function enter(n,id,remember){NAME=n;MYID=id.slice(0,14);LSK=LSK0+'.'+MYID;lsSet
   $('sw').onclick=()=>{auth=null;try{localStorage.removeItem('hotelAuth')}catch(e){}inp.style.display=pw.style.display='';$('remw').style.display='';$('sw').style.display='none';$('go').textContent='כניסה'};
   $('go').onclick=()=>{if(auth)enter(auth.n,auth.id,true)}}
  $('go').onclick=$('go').onclick||null;
- const doLogin=async()=>{if(auth&&auth.id){enter(auth.n,auth.id,true);return}const n=(inp.value||'').trim().slice(0,14),p=pw.value||'';if(n.length<2){er.textContent='כתוב שם (לפחות 2 אותיות)';return}if(p.length<3){er.textContent='סיסמה של 3 תווים לפחות';return}er.textContent='';const id=await hashAcc(n,p);enter(n,id,$('rem').checked)};
+ const doLogin=async()=>{if(auth&&auth.id){enter(auth.n,auth.id,true);return}const n=(inp.value||'').trim().slice(0,14),p=pw.value||'';if(n.length<2){er.textContent='כתוב שם (לפחות 2 אותיות)';return}if(p.length<4){er.textContent='סיסמה חובה – לפחות 4 תווים';return}
+  er.textContent='בודק שהשם פנוי…';const id=await hashAcc(n,p),id14=id.slice(0,14),key=await nameKey(n);let nm={};try{nm=JSON.parse(lsGet('hotelNames')||'{}')}catch(e){}
+  if(nm[key]&&nm[key]!==id14){er.textContent='השם הזה תפוס (או הסיסמה שגויה) – בחר שם אחר';return}
+  const r=await claimName(n,id14,key);
+  if(r==='taken'){er.textContent='השם הזה תפוס (או הסיסמה שגויה) – בחר שם אחר';return}
+  if(r==='unreach'){const dup=Object.values(PEERS).concat(Object.values(DIR)).find(o=>o&&o.n&&o.n.trim().toLowerCase()===n.toLowerCase()&&o.id!==id14);if(dup){er.textContent='השם הזה תפוס – בחר שם אחר';return}}
+  nm[key]=id14;lsSet('hotelNames',JSON.stringify(nm));er.textContent='';enter(n,id,$('rem').checked)};
  $('go').onclick=doLogin}
 
 window.__g={DIR,S,me,hud,rooms,setF,AG,visit,PEERS,SIG,FR,onPeers};
@@ -714,7 +786,7 @@ function dailyCheck(){if(VIS)return;const t=new Date(),ds=d=>d.toISOString().sli
  $('drb').onclick=()=>{S.cash+=a;S.g.dr={d:today,s:st};$('dr').style.display='none';burst(me.position.clone().setY(1.6),14);sfx.up();saveNow()}}
 // achievements
 const OP=()=>S.rm.filter(r=>r.open).length;
-const ACH=[['x5','🎓','רמת מנהל 5',()=>lvl()>=5],['x10','🎓','רמת מנהל 10',()=>lvl()>=10],['x20','🎓','רמת מנהל 20',()=>lvl()>=20],['c','💰','אספת כסף לראשונה',()=>S.g.n.c>=1],['u','⬆','שדרגת אזור',()=>S.g.n.u>=1],['h','👷','שכרת עובד',()=>S.g.n.h>=1],['o5','🏨','5 אזורים פתוחים',()=>OP()>=5],['o10','🏨','10 אזורים פתוחים',()=>OP()>=10],['f1','🛗','עלית לקומה 1',()=>S.g.n.f>=1],['fl2','🏢','פתחת קומה 2',()=>!!S.fl[1]],['fl3','🏙','פתחת קומה 3',()=>!!S.fl[2]],['l5','⭐','אזור ברמה 5',()=>S.rm.some(r=>r.l>=5)],['l10','🌟','אזור ברמה מקסימלית',()=>S.rm.some(r=>r.l>=MAXL)],['t','🪙','10,000 ₪ בטיפים',()=>S.g.tips>=1e4],['g5','🎁','5 מתנות',()=>S.g.gifts>=5],['fr','🤝','חבר ראשון',()=>Object.keys(FR).length>=1],['m1','💎','מיליון ₪',()=>S.cash>=1e6],['m9','👑','מיליארד ₪',()=>S.cash>=1e9],['pr','♻','שיפוץ יוקרה ראשון',()=>S.g.pr>=1]];
+const ACH=[['x5','🎓','רמת מנהל 5',()=>lvl()>=5],['x10','🎓','רמת מנהל 10',()=>lvl()>=10],['x20','🎓','רמת מנהל 20',()=>lvl()>=20],['c','💰','אספת כסף לראשונה',()=>S.g.n.c>=1],['u','⬆','שדרגת אזור',()=>S.g.n.u>=1],['h','👷','שכרת עובד',()=>S.g.n.h>=1],['o5','🏨','5 אזורים פתוחים',()=>OP()>=5],['o10','🏨','10 אזורים פתוחים',()=>OP()>=10],['f1','🛗','עלית לקומה 1',()=>S.g.n.f>=1],['fl2','🏢','פתחת קומה 2',()=>!!S.fl[1]],['fl3','🏙','פתחת קומה 3',()=>!!S.fl[2]],['l5','⭐','אזור ברמה 5',()=>S.rm.some(r=>r.l>=5)],['l10','🌟','אזור ברמה 30',()=>S.rm.some(r=>r.l>=30)],['l50','🌠','אזור ברמה 100',()=>S.rm.some(r=>r.l>=100)],['fl4','🛍','פתחת קומה 4',()=>!!S.fl[3]],['fl5','🚢','פתחת קומה 5',()=>!!S.fl[4]],['fl6','🚀','פתחת קומה 6 – החלל',()=>!!S.fl[5]],['t','🪙','10,000 ₪ בטיפים',()=>S.g.tips>=1e4],['g5','🎁','5 מתנות',()=>S.g.gifts>=5],['fr','🤝','חבר ראשון',()=>Object.keys(FR).length>=1],['m1','💎','מיליון ₪',()=>S.cash>=1e6],['m9','👑','מיליארד ₪',()=>S.cash>=1e9],['pr','♻','שיפוץ יוקרה ראשון',()=>S.g.pr>=1]];
 setInterval(()=>{if(!LOGGED||VIS)return;if(F>0)S.g.n.f=1;ACH.forEach(a=>{if(!S.g.ach[a[0]]&&a[3]()){S.g.ach[a[0]]=1;const r=Math.round(Math.max(300,income()*120));S.cash+=r;note('🏅 '+a[2]+' · +₪'+fs(r));sfx.up();saveNow()}})},1000);
 // tutorial
 const TUT=['עמוד על המשטח הזהב כדי לאסוף כסף 💰','עמוד על המשטח הלבן כדי לשדרג את האזור ⬆','עמוד על המשטח הטורקיז כדי לשכור עובד שעובד לבד 👷','כשיש כסף – עלה במעלית לקומה הבאה 🛗'];
