@@ -51,7 +51,9 @@ canvas{display:block;position:fixed;inset:0}
 <div id="start" style="position:fixed;inset:0;z-index:20;background:linear-gradient(#14193a,#2a1f55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#ffd86b;font:800 40px Heebo,sans-serif;text-align:center"><div>מלון הפאר</div><div style="font-size:16px;color:#c9cfe0;font-weight:500">נהל את המלון, שדרג קומות, שכור עובדים</div><input id="nm" maxlength="14" placeholder="שם המלון / השם שלך" style="border:0;border-radius:14px;padding:14px 18px;font:700 18px Heebo;text-align:center;width:230px;background:#ffffff1f;color:#fff"><button id="go" style="border:0;border-radius:18px;padding:16px 34px;font:800 20px Heebo;background:#ffd86b;color:#14193a">התחל במסך מלא</button></div>
 <div id="vis" style="position:fixed;left:0;right:0;bottom:150px;z-index:7;display:none;justify-content:center;gap:10px;align-items:center"><div id="visn" style="background:#0b1020dd;border-radius:14px;padding:10px 14px;font:800 14px Heebo;color:#ffd86b"></div><button id="vback" style="border:0;border-radius:14px;padding:10px 16px;font:800 14px Heebo;background:#ffd86b;color:#14193a">חזרה למלון שלי</button></div>
 <button id="pbtn" style="position:fixed;left:70px;bottom:130px;z-index:6;width:46px;height:46px;border:0;border-radius:14px;background:#0b1020cc;color:#ffd86b;font-size:22px">👥</button>
-<div id="panel" style="position:fixed;inset:auto 0 0 0;z-index:15;display:none;background:#0b1020f4;border-radius:22px 22px 0 0;padding:16px 16px max(18px,env(safe-area-inset-bottom));max-height:65%;overflow:auto;direction:rtl"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font:800 20px Heebo;color:#ffd86b">חברים במשחק</div><button id="pclose" style="border:0;background:none;color:#fff;font-size:24px">✕</button></div><div id="plist"></div><button id="pinv" style="width:100%;border:0;border-radius:14px;padding:14px;font:800 16px Heebo;background:#2fb5a8;color:#06201d;margin-top:6px">הזמן חברים (שתף קישור)</button></div>
+<div id="note" style="position:fixed;top:max(120px,calc(env(safe-area-inset-top) + 106px));left:50%;transform:translateX(-50%);z-index:29;display:none;background:#0b1020ee;border-radius:20px;padding:8px 16px;font:800 14px Heebo;color:#fff;white-space:nowrap;border:1px solid #2fe38a"></div>
+<div id="toast" style="position:fixed;top:max(70px,calc(env(safe-area-inset-top) + 56px));left:12px;right:12px;z-index:30;display:none;justify-content:space-between;align-items:center;gap:8px;background:#0b1020f2;border:2px solid #ffd86b;border-radius:16px;padding:12px 14px;direction:rtl"><div id="ttxt" style="font:800 15px Heebo;color:#fff"></div><div style="display:flex;gap:6px"><button id="tyes" style="border:0;border-radius:10px;padding:10px 14px;font:800 14px Heebo;background:#2fb5a8;color:#06201d">אשר</button><button id="tno" style="border:0;border-radius:10px;padding:10px 12px;font:800 14px Heebo;background:#3a4468;color:#fff">דחה</button></div></div>
+<div id="panel" style="position:fixed;inset:auto 0 0 0;z-index:15;display:none;background:#0b1020f4;border-radius:22px 22px 0 0;padding:16px 16px max(18px,env(safe-area-inset-bottom));max-height:65%;overflow:auto;direction:rtl"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font:800 20px Heebo;color:#ffd86b">חברים במשחק</div><button id="pclose" style="border:0;background:none;color:#fff;font-size:24px">✕</button></div><div id="pst" style="font-size:12px;color:#8fe8f0;margin:-4px 0 10px"></div><div id="plist"></div><button id="pinv" style="width:100%;border:0;border-radius:12px;padding:10px;font:700 13px Heebo;background:#ffffff1c;color:#c9cfe0;margin-top:6px">שחקן חדש? שתף קישור למשחק</button></div>
 <button id="fsb" style="position:fixed;left:12px;bottom:130px;z-index:6;width:46px;height:46px;border:0;border-radius:14px;background:#0b1020cc;color:#ffd86b;font-size:22px">⛶</button>
 <script type="module">
 import * as THREE from 'three';
@@ -536,53 +538,82 @@ function loop(){
  cam.position.set(cx,D*Math.sin(PITCH),1.5+D*Math.cos(PITCH));cam.lookAt(cx,0,1.5);
  GND.position.x=cx;wt0.offset.x=cx/10;wt0.offset.y=S.t*.01;sun.position.set(cx+7,16,9);sun.target.position.set(cx,0,0);
  R.render(scene,cam);requestAnimationFrame(loop)}
-/* ===== שמירה, מולטיפלייר, ביקור אצל חברים ===== */
-let VIS=null,NAME='',MYID='p'+Math.random().toString(36).slice(2,8),HOMEBK=null;
+/* ===== שמירה, מולטיפלייר, חברים, הצטרפות ===== */
+let VIS=null,NAME='',HOMEBK=null;
 const LSK='hotelSave2';
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let MYID=lsGet('hotelId')||('p'+Math.random().toString(36).slice(2,9));lsSet('hotelId',MYID);
 const GATE0={};for(const k in GATE)GATE0[k]=GATE[k].slice();
-function syncOpen(){S.rm.forEach((r,i)=>{if(r.lock>0){const o=GATE[i],g=rooms[i].g.userData.gate;if(r.open){o[0]=o[1]=o[2]=o[3]=0;if(g)g.visible=false}else{GATE[i].splice(0,4,...GATE0[i]);if(g)g.visible=true}}});buildTabs&&buildTabs()}
+function syncOpen(){S.rm.forEach((r,i)=>{if(r.lock>0){const o=GATE[i],g=rooms[i].g.userData.gate;if(r.open){o[0]=o[1]=o[2]=o[3]=0;if(g)g.visible=false}else{GATE[i].splice(0,4,...GATE0[i]);if(g)g.visible=true}}});buildTabs()}
 const income=()=>S.rm.reduce((a,r)=>a+(r.open?r.rate*r.l:0),0);
 const snapC=()=>({fl:S.fl.slice(),rm:S.rm.map(r=>[r.open?1:0,r.l,r.h])});
-const snapFull=()=>({n:NAME,cash:S.cash,fl:S.fl.slice(),rm:S.rm.map(r=>[r.open?1:0,r.l,r.h,Math.floor(r.p)]),ts:Date.now()});
+const snapFull=()=>({n:NAME,cash:S.cash,fl:S.fl.slice(),rm:S.rm.map(r=>[r.open?1:0,r.l,r.h,Math.floor(r.p)]),ts:Date.now(),fr:FR,p:[F,+me.position.x.toFixed(1),+me.position.z.toFixed(1)]});
 function applySnap(sn){if(!sn||!sn.rm)return;S.fl=sn.fl.slice();sn.rm.forEach((a,i)=>{const r=S.rm[i];if(!r)return;r.open=!!a[0];r.l=a[1]||1;r.h=a[2]||0;r.p=a[3]||0});syncOpen()}
+let FR={};const hitAt=(f,x,z)=>{const o=F;F=f;const h=hit(x,z);F=o;return h};
 function saveNow(){if(VIS)return;lsSet(LSK,JSON.stringify(snapFull()))}
-function loadSave(){const raw=lsGet(LSK);if(!raw)return false;try{const sn=JSON.parse(raw);S.cash=sn.cash;applySnap(sn);NAME=sn.n||NAME;const el=Math.min((Date.now()-sn.ts)/1000,4*3600);let g=0;S.rm.forEach(r=>{if(r.open&&r.h)g+=r.rate*r.l*el*.5});if(g>=1){S.cash+=g;setTimeout(()=>pop(innerWidth/2,innerHeight/2,'הרווחת ₪'+fs(g)+' כשלא היית'),600)}return true}catch(e){return false}}
+function loadSave(){const raw=lsGet(LSK);if(!raw)return false;try{const sn=JSON.parse(raw);S.cash=sn.cash;FR=sn.fr||{};applySnap(sn);NAME=sn.n||NAME;if(sn.p&&sn.p[0]>=0&&sn.p[0]<3&&S.fl[sn.p[0]]&&!hitAt(sn.p[0],sn.p[1],sn.p[2]))setF(sn.p[0],sn.p[1],sn.p[2]);const el=Math.min((Date.now()-sn.ts)/1000,4*3600);let g=0;S.rm.forEach(r=>{if(r.open&&r.h)g+=r.rate*r.l*el*.5});if(g>=1){S.cash+=g;setTimeout(()=>pop(innerWidth/2,innerHeight/2,'הרווחת ₪'+fs(g)+' כשלא היית'),600)}return true}catch(e){return false}}
 setInterval(saveNow,5000);addEventListener('pagehide',saveNow);
-/* שחקנים אחרים */
-const PEERS={};let ROOM=null;const GH={};
+/* שחקנים */
+const PEERS={},GH={};let ROOM=null,ROOMST='מתחבר…';
 const gcol=id=>{let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))>>>0;return h};
-function ghost(id,n){const h=gcol(id),cs=[0xe53935,0x2f4fe0,0x43a047,0xd81b60,0x7b3fd1,0xff8a3d];const p=person({shirt:cs[h%6],sleeve:cs[h%6],pants:0x2a2f4a,hair:[0x2a1a10,0x6a4a2a,0xc9a15a,0x111][h%4],skin:[0xf0c8a0,0xd9a679,0xb67a4f,0x8a5a3a][(h>>3)%4],style:['short','curly','bun'][h%3],fem:h%2?1:0});p.scale.setScalar(1.05);p.visible=false;scene.add(p);const lb=label();lb.scale.set(1.8,.68,1);setLabel(lb,n||'אורח','#0b1020cc','#ffd86b');lb.visible=false;return{p,lb,n,lx:0,lz:0}}
+function ghost(id,n){const h=gcol(id),cs=[0xe53935,0x2f4fe0,0x43a047,0xd81b60,0x7b3fd1,0xff8a3d];const p=person({shirt:cs[h%6],sleeve:cs[h%6],pants:0x2a2f4a,hair:[0x2a1a10,0x6a4a2a,0xc9a15a,0x111][h%4],skin:[0xf0c8a0,0xd9a679,0xb67a4f,0x8a5a3a][(h>>3)%4],style:['short','curly','bun'][h%3],fem:h%2?1:0});p.scale.setScalar(1.05);p.visible=false;scene.add(p);const lb=label();lb.scale.set(1.8,.68,1);setLabel(lb,n||'אורח','#0b1020cc','#ffd86b');lb.visible=false;return{p,lb,n}}
 const hostId=()=>VIS?VIS.id:MYID;
-function peerState(e){const s=e&&(e.state||e.presence||e.data)||e;return s&&typeof s==='object'?s:null}
+const peerState=e=>{const s=e&&(e.state||e.presence||e.data)||e;return s&&typeof s==='object'?s:null};
+/* אותות דרך נוכחות: fq=בקשות חברות שלי, fa=חברויות שאישרתי, jr=בקשת הצטרפות, ja=מי שאישרתי להצטרף, iv=הזמנות */
+const SIG={fq:{},fa:{},jr:{},ja:{},iv:{}},DIS={},TTL={fq:180e3,fa:180e3,jr:60e3,ja:90e3,iv:60e3};
+const sigList=k=>{const n=Date.now(),o=SIG[k];for(const id in o)if(n-o[id]>TTL[k])delete o[id];return Object.keys(o)};
+const has=(s,k)=>Array.isArray(s[k])&&s[k].includes(MYID);
+let NT=0;function note(t){const el=$('note');el.textContent=t;el.style.display='block';clearTimeout(NT);NT=setTimeout(()=>el.style.display='none',3500)}
+let TQ=[];
+function toast(key,txt,yes,no){if(TQ.find(t=>t.key===key))return;TQ.push({key,txt,yes,no});showToast()}
+function showToast(){const t=TQ[0],el=$('toast');if(!t){el.style.display='none';return}el.style.display='flex';$('ttxt').textContent=t.txt;$('tyes').onclick=()=>{TQ.shift();t.yes();showToast()};$('tno').onclick=()=>{TQ.shift();DIS[t.key]=1;t.no&&t.no();showToast()}}
+function pruneToasts(){TQ=TQ.filter(t=>t.alive?t.alive():true);showToast()}
 function onPeers(list){
- const arr=Array.isArray(list)?list:(list&&typeof list.forEach==='function'&&!(list instanceof Map)?Object.values(list):(list instanceof Map?[...list.values()]:Object.values(list||{})));
+ const arr=Array.isArray(list)?list:(list instanceof Map?[...list.values()]:(list&&typeof list==='object'?Object.values(list):[]));
  const seen={};
- arr.forEach(e=>{const s=peerState(e);if(!s||!s.id||s.id===MYID)return;seen[s.id]=1;PEERS[s.id]=s});
- for(const k in PEERS)if(!seen[k]){delete PEERS[k];if(GH[k]){scene.remove(GH[k].p);scene.remove(GH[k].lb);delete GH[k]}if(VIS&&VIS.id===k){goHome();pop(innerWidth/2,innerHeight/2,'החבר יצא מהמשחק')}}
+ arr.forEach(e=>{const s=peerState(e);if(!s||!s.id||s.id===MYID)return;seen[s.id]=1;if(!PEERS[s.id])note('🟢 '+(s.n||'אורח')+' התחבר למשחק');PEERS[s.id]=s});
+ for(const k in PEERS)if(!seen[k]){note('⚪ '+(PEERS[k].n||'אורח')+' התנתק');delete PEERS[k];if(GH[k]){scene.remove(GH[k].p);scene.remove(GH[k].lb);delete GH[k]}if(VIS&&VIS.id===k){goHome();pop(innerWidth/2,innerHeight/2,'השחקן יצא מהמשחק')}}
+ ROOMST='מחובר · '+(Object.keys(PEERS).length+1)+' שחקנים באי';
+ for(const id in PEERS){const s=PEERS[id],nm=s.n||'אורח';
+  if(FR[id]&&nm)FR[id]=nm;
+  if(has(s,'fq')&&!FR[id]){const k='fq'+id;if(!DIS[k])toast(k,nm+' רוצה להיות חבר שלך',()=>{FR[id]=nm;SIG.fa[id]=Date.now();delete DIS[k]},null)}else if(!has(s,'fq')){delete DIS['fq'+id]}
+  if(SIG.fq[id]&&has(s,'fa')){FR[id]=nm;delete SIG.fq[id];pop(innerWidth/2,innerHeight/2,nm+' אישר את החברות')}
+  if(has(s,'jr')){const k='jr'+id;if(!DIS[k])toast(k,nm+' רוצה להצטרף למלון שלך',()=>{SIG.ja[id]=Date.now()},null)}else delete DIS['jr'+id];
+  if(has(s,'iv')){const k='iv'+id;if(!DIS[k])toast(k,nm+' מזמין אותך למלון שלו',()=>{visit(id,true)},null)}else delete DIS['iv'+id];
+  if(SIG.jr[id]&&has(s,'ja')){delete SIG.jr[id];visit(id,true)}}
  if(VIS&&PEERS[VIS.id]&&PEERS[VIS.id].sn){applySnap(PEERS[VIS.id].sn);VIS.n=PEERS[VIS.id].n||VIS.n}
  renderFriends()}
 function stepGhosts(dt){for(const id in PEERS){const s=PEERS[id];let g=GH[id];if(!g)g=GH[id]=ghost(id,s.n);const vis=s.h===hostId()&&s.f===F;g.p.visible=g.lb.visible=vis;if(!vis)continue;
   const dx=s.x-g.p.position.x,dz=s.z-g.p.position.z,d=Math.hypot(dx,dz);if(d>6){g.p.position.set(s.x,0,s.z)}else{const k=Math.min(1,dt*8);g.p.position.x+=dx*k;g.p.position.z+=dz*k}
   if(d>.05)g.p.rotation.y=Math.atan2(dx,dz);gait(g.p,dt,d>.15,.75);g.lb.position.set(g.p.position.x,2.7,g.p.position.z)}}
 let lastPres='';
-function sendPres(){if(!ROOM)return;const o={id:MYID,n:NAME,x:+me.position.x.toFixed(1),z:+me.position.z.toFixed(1),f:F,h:hostId(),inc:Math.floor(income()),o:S.rm.filter(r=>r.open).length};if(!VIS)o.sn=snapC();const k=JSON.stringify(o);if(k===lastPres)return;lastPres=k;try{ROOM.presence(o)}catch(e){}}
-setInterval(sendPres,250);
-function visit(id){const s=PEERS[id];if(!s||!s.sn)return;if(!VIS)HOMEBK=snapFull();VIS={id,n:s.n};applySnap(s.sn);setF(0,-2,4.5);$('vis').style.display='flex';$('visn').textContent='מבקר במלון של '+(s.n||'חבר');$('panel').style.display='none'}
-function goHome(){if(!VIS)return;VIS=null;const c=S.cash;applySnap(HOMEBK);S.cash=HOMEBK.cash;$('vis').style.display='none';setF(0,-2,4.5);S.cash=Math.max(S.cash,c*0)+0}
+function sendPres(){if(!ROOM)return;const o={id:MYID,n:NAME,x:+me.position.x.toFixed(1),z:+me.position.z.toFixed(1),f:F,h:hostId(),inc:Math.floor(income()),o:S.rm.filter(r=>r.open).length,fq:sigList('fq'),fa:sigList('fa'),jr:sigList('jr'),ja:sigList('ja'),iv:sigList('iv')};if(!VIS)o.sn=snapC();const k=JSON.stringify(o);if(k===lastPres)return;lastPres=k;try{ROOM.presence(o)}catch(e){}}
+setInterval(sendPres,250);setInterval(()=>{sendPres();renderFriends()},2000);
+function visit(id,joined){const s=PEERS[id];if(!s||!s.sn)return;if(!VIS)HOMEBK=snapFull();VIS={id,n:s.n,joined:!!joined};applySnap(s.sn);setF(0,-2,4.5);$('vis').style.display='flex';$('visn').textContent=(joined?'אתה במלון של ':'מבקר באי של ')+(s.n||'חבר');$('panel').style.display='none'}
+function goHome(){if(!VIS)return;VIS=null;applySnap(HOMEBK);S.cash=HOMEBK.cash;$('vis').style.display='none';setF(0,-2,4.5)}
 $('vback').onclick=goHome;
-function renderFriends(){const L=$('plist');if(!L)return;const ids=Object.keys(PEERS);L.innerHTML='';if(!ids.length){L.innerHTML='<div style="color:#c9cfe0;font-size:14px;padding:8px">אף חבר לא מחובר כרגע. שלח להם את הקישור.</div>';return}
- ids.sort((a,b)=>(PEERS[b].inc||0)-(PEERS[a].inc||0)).forEach(id=>{const s=PEERS[id],row=document.createElement('div');row.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:8px;background:#ffffff14;border-radius:12px;padding:10px 12px;margin-bottom:8px';const t=document.createElement('div');t.textContent=(s.n||'אורח')+' · ₪'+fs(s.inc||0)+'/ש׳ · '+(s.o||0)+' אזורים';t.style.fontSize='14px';const b=document.createElement('button');b.textContent='בקר';b.style.cssText='border:0;border-radius:10px;padding:10px 16px;font:800 14px Heebo;background:#ffd86b;color:#14193a';b.onclick=()=>visit(id);row.append(t,b);L.appendChild(row)})}
+const act=(txt,fn,dis)=>{const b=document.createElement('button');b.textContent=txt;b.style.cssText='border:0;border-radius:10px;padding:9px 11px;font:800 13px Heebo;background:'+(dis?'#3a4468':'#ffd86b')+';color:'+(dis?'#c9cfe0':'#14193a');if(!dis)b.onclick=fn;return b};
+function renderFriends(){const L=$('plist');if(!L||$('panel').style.display!=='block')return;$('pst').textContent=ROOMST;L.innerHTML='';const ids=Object.keys(PEERS);
+ if(!ids.length){L.innerHTML='<div style="color:#c9cfe0;font-size:14px;padding:8px">אף שחקן אחר לא מחובר כרגע. כשחבר נכנס למשחק הוא יופיע כאן אוטומטית.</div>'}
+ ids.sort((a,b)=>(PEERS[b].inc||0)-(PEERS[a].inc||0)).forEach(id=>{const s=PEERS[id],fr=!!FR[id],row=document.createElement('div');row.style.cssText='background:#ffffff14;border-radius:14px;padding:10px 12px;margin-bottom:8px';
+  const t=document.createElement('div');t.innerHTML='<span style="color:#2fe38a">●</span> ';const nm=document.createElement('b');nm.textContent=(s.n||'אורח')+(fr?' ★':'');t.append(nm);const sub=document.createElement('div');sub.style.cssText='font-size:12px;color:#c9cfe0;margin:2px 0 8px';sub.textContent='₪'+fs(s.inc||0)+' לשנייה · '+(s.o||0)+' אזורים';
+  const bs=document.createElement('div');bs.style.cssText='display:flex;gap:6px;flex-wrap:wrap';
+  bs.append(act('בקר באי',()=>visit(id,false)));
+  bs.append(fr?act('✓ חבר',null,1):SIG.fq[id]?act('נשלחה בקשה',null,1):act('הוסף חבר',()=>{SIG.fq[id]=Date.now();sendPres();renderFriends()}));
+  bs.append(SIG.jr[id]?act('ממתין לאישור…',null,1):act('הצטרף',()=>{SIG.jr[id]=Date.now();sendPres();renderFriends()}));
+  bs.append(SIG.iv[id]?act('הזמנה נשלחה',null,1):act('הזמן אליי',()=>{SIG.iv[id]=Date.now();sendPres();renderFriends()}));
+  row.append(t,sub,bs);L.appendChild(row)});
+ const off=Object.keys(FR).filter(id=>!PEERS[id]);if(off.length){const h=document.createElement('div');h.style.cssText='font:800 14px Heebo;color:#ffd86b;margin:10px 0 6px';h.textContent='החברים שלי (לא מחוברים)';L.appendChild(h);off.forEach(id=>{const d=document.createElement('div');d.style.cssText='color:#c9cfe0;font-size:14px;padding:4px 2px';d.textContent='○ '+FR[id];L.appendChild(d)})}}
 $('pbtn').onclick=()=>{const p=$('panel');p.style.display=p.style.display==='block'?'none':'block';renderFriends()};
 $('pclose').onclick=()=>$('panel').style.display='none';
-$('pinv').onclick=async()=>{const u='https://claude.ai/artifact/E5fTasxLmRGbWqdiL56okD';try{if(navigator.share){await navigator.share({title:'מלון הפאר',text:'בוא לשחק איתי במלון הפאר!',url:u})}else{await navigator.clipboard.writeText(u);pop(innerWidth/2,innerHeight/2,'הקישור הועתק')}}catch(e){try{await navigator.clipboard.writeText(u);pop(innerWidth/2,innerHeight/2,'הקישור הועתק')}catch(_){pop(innerWidth/2,innerHeight/2,u)}}};
-(async()=>{try{if(!(window.claude&&claude.use))return;const u=await claude.use('user');if(u&&u.id){const id=await u.id();if(id)MYID='u'+id}
- const rm=await claude.use('room');if(!rm)return;ROOM=rm.join?rm.join('hotel-resort'):rm;if(ROOM.onPeers)ROOM.onPeers(onPeers);sendPres()}catch(e){}})();
-/* מסך פתיחה */
+$('pinv').onclick=async()=>{const u='https://claude.ai/artifact/E5fTasxLmRGbWqdiL56okD';try{if(navigator.share)await navigator.share({title:'מלון הפאר',url:u});else{await navigator.clipboard.writeText(u);pop(innerWidth/2,innerHeight/2,'הקישור הועתק')}}catch(e){}};
+(async()=>{try{if(!(window.claude&&claude.use)){ROOMST='לא מחובר: פתח את המשחק דרך claude.ai';return}
+ const rm=await claude.use('room');if(!rm){ROOMST='השרת לא זמין (צריך להיות מחובר ל‑Claude)';return}
+ ROOM=rm.join?rm.join('hotel-resort'):rm;if(ROOM.onPeers)ROOM.onPeers(onPeers);ROOMST='מחובר';sendPres()}catch(e){ROOMST='שגיאת חיבור'}})();
 {const had=loadSave();NAME=NAME||lsGet('hotelName')||'';const inp=$('nm');inp.value=NAME;if(had)$('go').textContent='המשך במסך מלא';
  $('go').onclick=()=>{NAME=(inp.value||'').trim().slice(0,14)||'אורח'+Math.floor(Math.random()*90+10);lsSet('hotelName',NAME);goFS();$('start').style.display='none';sendPres()}}
 
-window.__g={S,me,hud,rooms,setF,AG,visit,PEERS};
+window.__g={S,me,hud,rooms,setF,AG,visit,PEERS,SIG,FR,onPeers};
 buildTabs();setInterval(hud,200);setTimeout(()=>{const h=$('hint');if(h)h.style.display='none'},8000);hud();loop();window.ready=true;
 </script>
 </body>
