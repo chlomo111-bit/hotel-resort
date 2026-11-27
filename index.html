@@ -48,7 +48,7 @@ canvas{display:block;position:fixed;inset:0}
 <div id="hint">החלק עם האצבע כדי ללכת. עמוד על המשטחים: זהב לאסוף, לבן לשדרג, טורקיז לשכור עובד.</div>
 </div>
 </div>
-<div id="start" style="position:fixed;inset:0;z-index:20;background:linear-gradient(#14193a,#2a1f55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#ffd86b;font:800 40px Heebo,sans-serif;text-align:center"><div>מלון הפאר</div><div style="font-size:16px;color:#c9cfe0;font-weight:500">נהל את המלון, שדרג קומות, שכור עובדים</div><input id="nm" maxlength="14" placeholder="שם המלון / השם שלך" style="border:0;border-radius:14px;padding:14px 18px;font:700 18px Heebo;text-align:center;width:230px;background:#ffffff1f;color:#fff"><button id="go" style="border:0;border-radius:18px;padding:16px 34px;font:800 20px Heebo;background:#ffd86b;color:#14193a">התחל במסך מלא</button></div>
+<div id="start" style="position:fixed;inset:0;z-index:20;background:linear-gradient(#14193a,#2a1f55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#ffd86b;font:800 40px Heebo,sans-serif;text-align:center"><div>מלון הפאר</div><div style="font-size:16px;color:#c9cfe0;font-weight:500">נהל את המלון, שדרג קומות, שכור עובדים</div><input id="nm" maxlength="14" placeholder="שם המלון / השם שלך" style="border:0;border-radius:14px;padding:14px 18px;font:700 18px Heebo;text-align:center;width:230px;background:#ffffff1f;color:#fff"><input id="pw" type="password" autocomplete="current-password" placeholder="סיסמה" style="border:0;border-radius:14px;padding:14px 18px;font:700 18px Heebo;text-align:center;width:230px;background:#ffffff1f;color:#fff"><label id="remw" style="font:600 14px Heebo;color:#c9cfe0"><input id="rem" type="checkbox" checked style="vertical-align:middle;margin-left:6px">שמור אותי מחובר</label><div id="perr" style="font:600 13px Heebo;color:#ff8a8a;min-height:16px"></div><button id="sw" style="display:none;border:0;background:none;color:#8fe8f0;font:600 14px Heebo;text-decoration:underline">לא אני / החלף משתמש</button><button id="go" style="border:0;border-radius:18px;padding:16px 34px;font:800 20px Heebo;background:#ffd86b;color:#14193a">כניסה למשחק במסך מלא</button></div>
 <div id="vis" style="position:fixed;left:0;right:0;bottom:150px;z-index:7;display:none;justify-content:center;gap:10px;align-items:center"><div id="visn" style="background:#0b1020dd;border-radius:14px;padding:10px 14px;font:800 14px Heebo;color:#ffd86b"></div><button id="vback" style="border:0;border-radius:14px;padding:10px 16px;font:800 14px Heebo;background:#ffd86b;color:#14193a">חזרה למלון שלי</button></div>
 <button id="pbtn" style="position:fixed;left:70px;bottom:130px;z-index:6;width:46px;height:46px;border:0;border-radius:14px;background:#0b1020cc;color:#ffd86b;font-size:22px">👥</button>
 <div id="note" style="position:fixed;top:max(120px,calc(env(safe-area-inset-top) + 106px));left:50%;transform:translateX(-50%);z-index:29;display:none;background:#0b1020ee;border-radius:20px;padding:8px 16px;font:800 14px Heebo;color:#fff;white-space:nowrap;border:1px solid #2fe38a"></div>
@@ -540,9 +540,9 @@ function loop(){
  R.render(scene,cam);requestAnimationFrame(loop)}
 /* ===== שמירה, מולטיפלייר, חברים, הצטרפות ===== */
 let VIS=null,NAME='',HOMEBK=null;
-const LSK='hotelSave2';
+let LSK='hotelSave2',LOGGED=false;const LSK0='hotelSave2';
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
-let MYID=lsGet('hotelId')||('p'+Math.random().toString(36).slice(2,9));lsSet('hotelId',MYID);
+let MYID='p'+Math.random().toString(36).slice(2,9);
 const GATE0={};for(const k in GATE)GATE0[k]=GATE[k].slice();
 function syncOpen(){S.rm.forEach((r,i)=>{if(r.lock>0){const o=GATE[i],g=rooms[i].g.userData.gate;if(r.open){o[0]=o[1]=o[2]=o[3]=0;if(g)g.visible=false}else{GATE[i].splice(0,4,...GATE0[i]);if(g)g.visible=true}}});buildTabs()}
 const income=()=>S.rm.reduce((a,r)=>a+(r.open?r.rate*r.l:0),0);
@@ -551,7 +551,7 @@ const snapFull=()=>({n:NAME,cash:S.cash,fl:S.fl.slice(),rm:S.rm.map(r=>[r.open?1
 function applySnap(sn){if(!sn||!sn.rm)return;S.fl=sn.fl.slice();sn.rm.forEach((a,i)=>{const r=S.rm[i];if(!r)return;r.open=!!a[0];r.l=a[1]||1;r.h=a[2]||0;r.p=a[3]||0});syncOpen()}
 let FR={};const hitAt=(f,x,z)=>{const o=F;F=f;const h=hit(x,z);F=o;return h};
 function saveNow(){if(VIS)return;lsSet(LSK,JSON.stringify(snapFull()))}
-function loadSave(){const raw=lsGet(LSK);if(!raw)return false;try{const sn=JSON.parse(raw);S.cash=sn.cash;FR=sn.fr||{};applySnap(sn);NAME=sn.n||NAME;if(sn.p&&sn.p[0]>=0&&sn.p[0]<3&&S.fl[sn.p[0]]&&!hitAt(sn.p[0],sn.p[1],sn.p[2]))setF(sn.p[0],sn.p[1],sn.p[2]);const el=Math.min((Date.now()-sn.ts)/1000,4*3600);let g=0;S.rm.forEach(r=>{if(r.open&&r.h)g+=r.rate*r.l*el*.5});if(g>=1){S.cash+=g;setTimeout(()=>pop(innerWidth/2,innerHeight/2,'הרווחת ₪'+fs(g)+' כשלא היית'),600)}return true}catch(e){return false}}
+function loadSave(){const raw=lsGet(LSK)||lsGet(LSK0);if(!raw)return false;try{const sn=JSON.parse(raw);S.cash=sn.cash;FR=sn.fr||{};applySnap(sn);NAME=sn.n||NAME;if(sn.p&&sn.p[0]>=0&&sn.p[0]<3&&S.fl[sn.p[0]]&&!hitAt(sn.p[0],sn.p[1],sn.p[2]))setF(sn.p[0],sn.p[1],sn.p[2]);const el=Math.min((Date.now()-sn.ts)/1000,4*3600);let g=0;S.rm.forEach(r=>{if(r.open&&r.h)g+=r.rate*r.l*el*.5});if(g>=1){S.cash+=g;setTimeout(()=>pop(innerWidth/2,innerHeight/2,'הרווחת ₪'+fs(g)+' כשלא היית'),600)}return true}catch(e){return false}}
 setInterval(saveNow,5000);addEventListener('pagehide',saveNow);
 /* שחקנים */
 const PEERS={},GH={};let ROOM=null,ROOMST='מתחבר…';
@@ -587,7 +587,7 @@ function stepGhosts(dt){for(const id in PEERS){const s=PEERS[id];let g=GH[id];if
   const dx=s.x-g.p.position.x,dz=s.z-g.p.position.z,d=Math.hypot(dx,dz);if(d>6){g.p.position.set(s.x,0,s.z)}else{const k=Math.min(1,dt*8);g.p.position.x+=dx*k;g.p.position.z+=dz*k}
   if(d>.05)g.p.rotation.y=Math.atan2(dx,dz);gait(g.p,dt,d>.15,.75);g.lb.position.set(g.p.position.x,2.7,g.p.position.z)}}
 let lastPres='',lastT=0;
-function sendPres(){if(!ROOM)return;const o={id:MYID,n:NAME,x:+me.position.x.toFixed(1),z:+me.position.z.toFixed(1),f:F,h:hostId(),inc:Math.floor(income()),o:S.rm.filter(r=>r.open).length,fq:sigList('fq'),fa:sigList('fa'),jr:sigList('jr'),ja:sigList('ja'),iv:sigList('iv')};if(!VIS)o.sn=snapC();const k=JSON.stringify(o);if(k===lastPres&&!(ROOM.mqtt&&Date.now()-lastT<1500))return;lastPres=k;lastT=Date.now();try{ROOM.presence(o)}catch(e){}}
+function sendPres(){if(!ROOM||!LOGGED)return;const o={id:MYID,n:NAME,x:+me.position.x.toFixed(1),z:+me.position.z.toFixed(1),f:F,h:hostId(),inc:Math.floor(income()),o:S.rm.filter(r=>r.open).length,fq:sigList('fq'),fa:sigList('fa'),jr:sigList('jr'),ja:sigList('ja'),iv:sigList('iv')};if(!VIS)o.sn=snapC();const k=JSON.stringify(o);if(k===lastPres&&!(ROOM.mqtt&&Date.now()-lastT<1500))return;lastPres=k;lastT=Date.now();try{ROOM.presence(o)}catch(e){}}
 setInterval(sendPres,250);setInterval(()=>{sendPres();renderFriends()},2000);
 function visit(id,joined){const s=PEERS[id];if(!s||!s.sn)return;if(!VIS)HOMEBK=snapFull();VIS={id,n:s.n,joined:!!joined};applySnap(s.sn);setF(0,-2,4.5);$('vis').style.display='flex';$('visn').textContent=(joined?'אתה במלון של ':'מבקר באי של ')+(s.n||'חבר');$('panel').style.display='none'}
 function goHome(){if(!VIS)return;VIS=null;applySnap(HOMEBK);S.cash=HOMEBK.cash;$('vis').style.display='none';setF(0,-2,4.5)}
@@ -618,8 +618,16 @@ function startMQTT(){ROOMST='מתחבר לשרת…';const sc=document.createEle
 (async()=>{try{if(!(window.claude&&claude.use)){startMQTT();return}
  const rm=await claude.use('room');if(!rm){startMQTT();return}
  ROOM=rm.join?rm.join('hotel-resort'):rm;if(ROOM.onPeers)ROOM.onPeers(onPeers);ROOMST='מחובר';sendPres()}catch(e){ROOMST='שגיאת חיבור'}})();
-{const had=loadSave();NAME=NAME||lsGet('hotelName')||'';const inp=$('nm');inp.value=NAME;if(had)$('go').textContent='המשך במסך מלא';
- $('go').onclick=()=>{NAME=(inp.value||'').trim().slice(0,14)||'אורח'+Math.floor(Math.random()*90+10);lsSet('hotelName',NAME);goFS();$('start').style.display='none';sendPres()}}
+async function hashAcc(n,pw){const str='hotel|'+n.trim().toLowerCase()+'|'+pw;try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h1=0xdeadbeef,h2=0x41c6ce57;for(let k=0;k<str.length;k++){const c=str.charCodeAt(k);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}return(h1>>>0).toString(16).padStart(8,'0')+(h2>>>0).toString(16).padStart(8,'0')+str.length.toString(16).padStart(4,'0')}}
+function enter(n,id,remember){NAME=n;MYID=id.slice(0,14);LSK=LSK0+'.'+MYID;lsSet('hotelName',n);if(remember)lsSet('hotelAuth',JSON.stringify({n,id}));else{try{localStorage.removeItem('hotelAuth')}catch(e){}}
+ loadSave();NAME=n;LOGGED=true;goFS();$('start').style.display='none';lastPres='';sendPres()}
+{let auth=null;try{auth=JSON.parse(lsGet('hotelAuth')||'null')}catch(e){}const inp=$('nm'),pw=$('pw'),er=$('perr');inp.value=(auth&&auth.n)||lsGet('hotelName')||'';
+ if(auth&&auth.id){pw.style.display='none';$('remw').style.display='none';$('go').textContent='המשך כ־'+auth.n;$('sw').style.display='block';inp.style.display='none';
+  $('sw').onclick=()=>{auth=null;try{localStorage.removeItem('hotelAuth')}catch(e){}inp.style.display=pw.style.display='';$('remw').style.display='';$('sw').style.display='none';$('go').textContent='כניסה'};
+  $('go').onclick=()=>{if(auth)enter(auth.n,auth.id,true)}}
+ $('go').onclick=$('go').onclick||null;
+ const doLogin=async()=>{if(auth&&auth.id){enter(auth.n,auth.id,true);return}const n=(inp.value||'').trim().slice(0,14),p=pw.value||'';if(n.length<2){er.textContent='כתוב שם (לפחות 2 אותיות)';return}if(p.length<3){er.textContent='סיסמה של 3 תווים לפחות';return}er.textContent='';const id=await hashAcc(n,p);enter(n,id,$('rem').checked)};
+ $('go').onclick=doLogin}
 
 window.__g={S,me,hud,rooms,setF,AG,visit,PEERS,SIG,FR,onPeers};
 buildTabs();setInterval(hud,200);setTimeout(()=>{const h=$('hint');if(h)h.style.display='none'},8000);hud();loop();window.ready=true;
