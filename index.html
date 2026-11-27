@@ -586,8 +586,8 @@ function onPeers(list){
 function stepGhosts(dt){for(const id in PEERS){const s=PEERS[id];let g=GH[id];if(!g)g=GH[id]=ghost(id,s.n);const vis=s.h===hostId()&&s.f===F;g.p.visible=g.lb.visible=vis;if(!vis)continue;
   const dx=s.x-g.p.position.x,dz=s.z-g.p.position.z,d=Math.hypot(dx,dz);if(d>6){g.p.position.set(s.x,0,s.z)}else{const k=Math.min(1,dt*8);g.p.position.x+=dx*k;g.p.position.z+=dz*k}
   if(d>.05)g.p.rotation.y=Math.atan2(dx,dz);gait(g.p,dt,d>.15,.75);g.lb.position.set(g.p.position.x,2.7,g.p.position.z)}}
-let lastPres='';
-function sendPres(){if(!ROOM)return;const o={id:MYID,n:NAME,x:+me.position.x.toFixed(1),z:+me.position.z.toFixed(1),f:F,h:hostId(),inc:Math.floor(income()),o:S.rm.filter(r=>r.open).length,fq:sigList('fq'),fa:sigList('fa'),jr:sigList('jr'),ja:sigList('ja'),iv:sigList('iv')};if(!VIS)o.sn=snapC();const k=JSON.stringify(o);if(k===lastPres)return;lastPres=k;try{ROOM.presence(o)}catch(e){}}
+let lastPres='',lastT=0;
+function sendPres(){if(!ROOM)return;const o={id:MYID,n:NAME,x:+me.position.x.toFixed(1),z:+me.position.z.toFixed(1),f:F,h:hostId(),inc:Math.floor(income()),o:S.rm.filter(r=>r.open).length,fq:sigList('fq'),fa:sigList('fa'),jr:sigList('jr'),ja:sigList('ja'),iv:sigList('iv')};if(!VIS)o.sn=snapC();const k=JSON.stringify(o);if(k===lastPres&&!(ROOM.mqtt&&Date.now()-lastT<1500))return;lastPres=k;lastT=Date.now();try{ROOM.presence(o)}catch(e){}}
 setInterval(sendPres,250);setInterval(()=>{sendPres();renderFriends()},2000);
 function visit(id,joined){const s=PEERS[id];if(!s||!s.sn)return;if(!VIS)HOMEBK=snapFull();VIS={id,n:s.n,joined:!!joined};applySnap(s.sn);setF(0,-2,4.5);$('vis').style.display='flex';$('visn').textContent=(joined?'אתה במלון של ':'מבקר באי של ')+(s.n||'חבר');$('panel').style.display='none'}
 function goHome(){if(!VIS)return;VIS=null;applySnap(HOMEBK);S.cash=HOMEBK.cash;$('vis').style.display='none';setF(0,-2,4.5)}
@@ -607,8 +607,16 @@ function renderFriends(){const L=$('plist');if(!L||$('panel').style.display!=='b
 $('pbtn').onclick=()=>{const p=$('panel');p.style.display=p.style.display==='block'?'none':'block';renderFriends()};
 $('pclose').onclick=()=>$('panel').style.display='none';
 $('pinv').onclick=async()=>{const u='https://claude.ai/artifact/E5fTasxLmRGbWqdiL56okD';try{if(navigator.share)await navigator.share({title:'מלון הפאר',url:u});else{await navigator.clipboard.writeText(u);pop(innerWidth/2,innerHeight/2,'הקישור הועתק')}}catch(e){}};
-(async()=>{try{if(!(window.claude&&claude.use)){ROOMST='לא מחובר: פתח את המשחק דרך claude.ai';return}
- const rm=await claude.use('room');if(!rm){ROOMST='השרת לא זמין (צריך להיות מחובר ל‑Claude)';return}
+function startMQTT(){ROOMST='מתחבר לשרת…';const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js';
+ sc.onerror=()=>{ROOMST='השרת לא זמין'};
+ sc.onload=()=>{try{const T='shlomo-hotel-resort-v1/p/',cl=mqtt.connect('wss://broker.hivemq.com:8884/mqtt',{reconnectPeriod:3000}),ST={},TS={};
+  const flush=()=>{const n=Date.now(),l=[];for(const id in ST){if(n-TS[id]>5000){delete ST[id];delete TS[id]}else l.push(ST[id])}onPeers(l)};
+  cl.on('connect',()=>{cl.subscribe(T+'+');ROOMST='מחובר'});cl.on('error',()=>{ROOMST='שגיאת חיבור'});cl.on('offline',()=>{ROOMST='לא מחובר, מנסה שוב…'});
+  cl.on('message',(t,m)=>{try{const o=JSON.parse(m.toString());if(o&&o.id){ST[o.id]=o;TS[o.id]=Date.now();flush()}}catch(e){}});
+  setInterval(flush,1000);ROOM={mqtt:1,presence:o=>{if(cl.connected)cl.publish(T+MYID,JSON.stringify(o))}};sendPres()}catch(e){ROOMST='שגיאת חיבור'}};
+ document.head.appendChild(sc)}
+(async()=>{try{if(!(window.claude&&claude.use)){startMQTT();return}
+ const rm=await claude.use('room');if(!rm){startMQTT();return}
  ROOM=rm.join?rm.join('hotel-resort'):rm;if(ROOM.onPeers)ROOM.onPeers(onPeers);ROOMST='מחובר';sendPres()}catch(e){ROOMST='שגיאת חיבור'}})();
 {const had=loadSave();NAME=NAME||lsGet('hotelName')||'';const inp=$('nm');inp.value=NAME;if(had)$('go').textContent='המשך במסך מלא';
  $('go').onclick=()=>{NAME=(inp.value||'').trim().slice(0,14)||'אורח'+Math.floor(Math.random()*90+10);lsSet('hotelName',NAME);goFS();$('start').style.display='none';sendPres()}}
